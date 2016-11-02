@@ -44,12 +44,13 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.restaurant_type, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
+        Spinner priceSpinner = (Spinner) findViewById(R.id.priceSpinner);
+
+        setupSpinner(priceSpinner,R.array.price_type);
+
+        Spinner foodSpinner = (Spinner) findViewById(R.id.foodSpinner);
+
+        setupSpinner(foodSpinner,R.array.restaurant_type);
 
         apiResource = Resource.getInstance(getResources().openRawResource(R.raw.yelpkey));
 
@@ -57,14 +58,14 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         category[0] = "newamerican";
         category[1] = "tradamerican";
 
-//        tv = (TextView) findViewById(R.id.output);
-//        bt = (Button) findViewById(R.id.button);
-//        bt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new MyTask().execute();
-//            }
-//        });
+    }
+
+    public void setupSpinner(Spinner s,int id ){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,id,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        s.setAdapter(adapter);
+        s.setOnItemSelectedListener(this);
+
     }
 
 
@@ -73,14 +74,6 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
-
-        // Associate searchable configuration with the SearchView
-//        SearchManager searchManager =
-//                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView =
-//                (SearchView) menu.findItem(R.id.search).getActionView();
-//        searchView.setSearchableInfo(
-//                searchManager.getSearchableInfo(getComponentName()));
 
         return true;
 
