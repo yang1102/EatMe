@@ -1,0 +1,41 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        applicationId "com.example.jason.liketmreal"
+        minSdkVersion 15
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.google.auto.value:auto-value:1.1'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0'
+    compile 'com.squareup.retrofit2:converter-jackson:2.0.0'
+    compile 'oauth.signpost:signpost-core:1.2.1.2'
+    compile 'se.akerfeldt:okhttp-signpost:1.1.0'
+    compile 'com.squareup.okhttp3:okhttp:3.1.2'
+    compile 'com.yelp.clientlib:yelp-android:2.0.0'
+
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.2.0'
+    testCompile 'org.easymock:easymock:3.4'
+    testCompile 'org.powermock:powermock-api-easymock:1.6.4'
+    testCompile 'org.powermock:powermock-module-junit4:1.6.4'
+    testCompile 'junit:junit:4.12'
+    testCompile 'junit-addons:junit-addons:1.4'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+}
