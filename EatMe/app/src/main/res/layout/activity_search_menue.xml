@@ -63,8 +63,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Give me a Suggestion"
-        android:id="@+id/distanceButton"
+        android:text="Browse Nearby Restaurants"
+        android:id="@+id/nearbyButton"
         android:layout_below="@+id/suggestButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="53dp" />
@@ -72,7 +72,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Browse Nearby Restaurant"
+        android:text="Give me a suggestion"
         android:id="@+id/suggestButton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />

@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import org.xml.sax.XMLReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.SAXParser;
@@ -32,9 +34,9 @@ import javax.xml.parsers.SAXParserFactory;
 
 public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    Resource apiResource;
-    Button bt;
-    TextView tv;
+    private Resource apiResource;
+    private Button searchNearbyButton;
+    private TextView tv;
     private String[]  category;
 
     @Override
@@ -45,12 +47,12 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         setSupportActionBar(myToolbar);
 
         Spinner priceSpinner = (Spinner) findViewById(R.id.priceSpinner);
-
         setupSpinner(priceSpinner,R.array.price_type);
 
         Spinner foodSpinner = (Spinner) findViewById(R.id.foodSpinner);
-
         setupSpinner(foodSpinner,R.array.restaurant_type);
+
+        searchNearbyButton = (Button) findViewById(R.id.nearbyButton);
 
         apiResource = Resource.getInstance(getResources().openRawResource(R.raw.yelpkey));
 
@@ -58,6 +60,32 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         category[0] = "newamerican";
         category[1] = "tradamerican";
 
+        //setup onclick listener for nearbyButton
+        searchNearbyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //put async task to query yelp api here.
+                //that async task will call startSearchResultsActivity onCallback
+                //manually creating searchResults list to send to listView Activity
+                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
+                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
+                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
+                searchResutls.add(new Restaurant("Taco's and Tequila"));
+                searchResutls.add(new Restaurant("Taco Bell"));
+                searchResutls.add(new Restaurant("Del Taco"));
+                searchResutls.add(new Restaurant("Taco Shack"));
+                searchResutls.add(new Restaurant("Taco Deli"));
+
+                startSearchResultsActivity(searchResutls);
+            }
+        });
+
+    }
+
+    public void startSearchResultsActivity(ArrayList<Restaurant> searchResults){
+        Intent intent = new Intent(this, SearchResultsActivity.class);
+        intent.putExtra("searchResults", searchResults);
+        startActivity(intent);
     }
 
     public void setupSpinner(Spinner s,int id ){

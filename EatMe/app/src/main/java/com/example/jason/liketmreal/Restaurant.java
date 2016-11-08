@@ -1,16 +1,31 @@
 package com.example.jason.liketmreal;
 
+import java.io.Serializable;
+
 /**
  * Created by mattunion on 11/7/16.
  */
 
-public class Restaurant {
-    private String name;
-    private String address;
-    private String url;
-    private String phoneNumber;
-    private int rating;
-    private int price;
+public class Restaurant implements Serializable{
+    private String name = "";
+    private String address = "";
+    private String url = "";
+    private String phoneNumber = "";
+    private int rating = -1;
+    private int price = -1;
+
+    public Restaurant(String name, String address, String url, String phoneNumber, int rating, int price){
+        this.name = name;
+        this.address = address;
+        this.url = url;
+        this.phoneNumber = phoneNumber;
+        this.rating = rating;
+        this.price = price;
+    }
+
+    public Restaurant(String name){
+        this.name = name;
+    }
 
     public int getPrice() {
         return price;
