@@ -58,8 +58,7 @@
         android:layout_margin="10dp"/>
 
     </LinearLayout>
-
-
+    
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -76,6 +75,31 @@
         android:id="@+id/suggestButton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nearbyButton"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/costPicker">
+    </NumberPicker>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nearbyButton"
+        android:layout_toLeftOf="@id/costPicker"
+        android:id="@+id/typePicker">
+    </NumberPicker>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nearbyButton"
+        android:layout_toRightOf="@id/costPicker"
+        android:id="@+id/distancePicker">
+    </NumberPicker>
 
 
 </RelativeLayout>

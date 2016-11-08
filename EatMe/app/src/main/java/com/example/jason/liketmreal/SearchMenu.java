@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -38,6 +39,10 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
     private Button searchNearbyButton;
     private TextView tv;
     private String[]  category;
+    private NumberPicker typePicker;
+    private NumberPicker costPicker;
+    private NumberPicker distancePicker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +58,44 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         setupSpinner(foodSpinner,R.array.restaurant_type);
 
         searchNearbyButton = (Button) findViewById(R.id.nearbyButton);
+
+        //setup pickers
+        typePicker = (NumberPicker) findViewById(R.id.typePicker);
+        costPicker = (NumberPicker) findViewById(R.id.costPicker);
+        distancePicker = (NumberPicker) findViewById(R.id.distancePicker);
+
+        final String[] arrayString= new String[]{"American","Chinese","Mexican","Italian","Indian"};//for testing purposes
+        typePicker.setMinValue(0);
+        typePicker.setMaxValue(arrayString.length-1);
+        typePicker.setFormatter(new NumberPicker.Formatter() {
+
+            @Override
+            public String format(int value) {
+                return arrayString[value];
+            }
+        });
+
+        final String[] arrayCost= new String[]{"$","$$","$$$","$$$$","$$$$$"};//for testing purposes
+        costPicker.setMinValue(0);
+        costPicker.setMaxValue(arrayCost.length-1);
+        costPicker.setFormatter(new NumberPicker.Formatter() {
+
+            @Override
+            public String format(int value) {
+                return arrayCost[value];
+            }
+        });
+
+        final String[] arrayDistance= new String[]{"1 Mile","5 Miles","10 Miles","15 Miles","20 Miles"};//for testing purposes
+        distancePicker.setMinValue(0);
+        distancePicker.setMaxValue(arrayDistance.length-1);
+        distancePicker.setFormatter(new NumberPicker.Formatter() {
+
+            @Override
+            public String format(int value) {
+                return arrayDistance[value];
+            }
+        });
 
         apiResource = Resource.getInstance(getResources().openRawResource(R.raw.yelpkey));
 
