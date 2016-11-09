@@ -121,7 +121,6 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
                 //put async task to query yelp api here.
                 //that async task will call startSearchResultsActivity onCallback
                 //manually creating searchResults list to send to listView Activity
-<<<<<<< HEAD
 //                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
 //                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
 //                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
@@ -130,22 +129,10 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
 //                searchResutls.add(new Restaurant("Del Taco"));
 //                searchResutls.add(new Restaurant("Taco Shack"));
 //                searchResutls.add(new Restaurant("Taco Deli"));
+//                searchResutls.add(new Restaurant("Gloria's"));
+//
 //
 //                startSearchResultsActivity(searchResutls);
-=======
-                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
-                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
-                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
-                searchResutls.add(new Restaurant("Taco's and Tequila"));
-                searchResutls.add(new Restaurant("Taco Bell"));
-                searchResutls.add(new Restaurant("Del Taco"));
-                searchResutls.add(new Restaurant("Taco Shack"));
-                searchResutls.add(new Restaurant("Taco Deli"));
-                searchResutls.add(new Restaurant("Gloria's"));
-
-
-                startSearchResultsActivity(searchResutls);
->>>>>>> master
             }
         });
 

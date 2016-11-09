@@ -15,7 +15,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <SearchView
+    <EditText
         android:layout_width="match_parent"
         android:queryHint="Enter KeyWord"
         android:id="@+id/searchText"
