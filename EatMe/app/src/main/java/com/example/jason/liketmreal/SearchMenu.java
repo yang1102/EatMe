@@ -25,6 +25,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
 
     private Resource apiResource;
     private Button searchNearbyButton;
+    private Button suggestionButton;
     private TextView tv;
     private String[]  category;
     private NumberPicker typePicker;
@@ -51,13 +54,8 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        Spinner priceSpinner = (Spinner) findViewById(R.id.priceSpinner);
-        setupSpinner(priceSpinner,R.array.price_type);
-
-        Spinner foodSpinner = (Spinner) findViewById(R.id.foodSpinner);
-        setupSpinner(foodSpinner,R.array.restaurant_type);
-
         searchNearbyButton = (Button) findViewById(R.id.nearbyButton);
+        suggestionButton = (Button) findViewById(R.id.suggestButton);
 
         //setup pickers
         typePicker = (NumberPicker) findViewById(R.id.typePicker);
@@ -118,11 +116,44 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
                 searchResutls.add(new Restaurant("Del Taco"));
                 searchResutls.add(new Restaurant("Taco Shack"));
                 searchResutls.add(new Restaurant("Taco Deli"));
+                searchResutls.add(new Restaurant("Gloria's"));
+
 
                 startSearchResultsActivity(searchResutls);
             }
         });
 
+        //setup onclick listener for suggestButton
+        suggestionButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //animate number picker change
+                changeValueByOne(costPicker, true);
+            }
+        });
+
+    }
+
+    //animate number picker
+    private void changeValueByOne(final NumberPicker higherPicker, final boolean increment) {
+
+        Method method;
+        try {
+            // refelction call for
+            // higherPicker.changeValueByOne(true);
+            method = higherPicker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
+            method.setAccessible(true);
+            method.invoke(higherPicker, increment);
+
+        } catch (final NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (final IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (final IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (final InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startSearchResultsActivity(ArrayList<Restaurant> searchResults){

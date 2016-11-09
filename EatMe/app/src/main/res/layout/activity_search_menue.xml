@@ -33,29 +33,23 @@
         android:orientation="horizontal"
         android:id="@+id/spinnerView">
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/priceSpinner"
-        android:layout_margin="10dp"/>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/costPicker">
+        </NumberPicker>
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/foodSpinner"
-        android:layout_margin="10dp"/>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/typePicker">
+        </NumberPicker>
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/distanceSpinner"
-        android:layout_margin="10dp"/>
+        <NumberPicker
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/distancePicker">
+        </NumberPicker>
 
     </LinearLayout>
     
@@ -75,31 +69,6 @@
         android:id="@+id/suggestButton"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nearbyButton"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/costPicker">
-    </NumberPicker>
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nearbyButton"
-        android:layout_toLeftOf="@id/costPicker"
-        android:id="@+id/typePicker">
-    </NumberPicker>
-
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/nearbyButton"
-        android:layout_toRightOf="@id/costPicker"
-        android:id="@+id/distancePicker">
-    </NumberPicker>
 
 
 </RelativeLayout>
