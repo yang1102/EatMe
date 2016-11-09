@@ -16,10 +16,14 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
-import android.widget.TextView;
 
+import android.app.SearchManager;
+import android.widget.SearchView.OnQueryTextListener;
+
+import com.yelp.clientlib.entities.Business;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -33,15 +37,16 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemSelectedListener, APIFetch.Callback {
 
-    private Resource apiResource;
     private Button searchNearbyButton;
-    private TextView tv;
     private String[]  category;
     private NumberPicker typePicker;
     private NumberPicker costPicker;
     private NumberPicker distancePicker;
+    private EditText searchView;
+
+    private SearchMenu searchMenu;
 
 
     @Override
@@ -58,11 +63,13 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         setupSpinner(foodSpinner,R.array.restaurant_type);
 
         searchNearbyButton = (Button) findViewById(R.id.nearbyButton);
+        searchView = (EditText) findViewById(R.id.searchText);;
 
         //setup pickers
         typePicker = (NumberPicker) findViewById(R.id.typePicker);
         costPicker = (NumberPicker) findViewById(R.id.costPicker);
         distancePicker = (NumberPicker) findViewById(R.id.distancePicker);
+        searchMenu = this;
 
         final String[] arrayString= new String[]{"American","Chinese","Mexican","Italian","Indian"};//for testing purposes
         typePicker.setMinValue(0);
@@ -97,7 +104,8 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
             }
         });
 
-        apiResource = Resource.getInstance(getResources().openRawResource(R.raw.yelpkey));
+
+        getResources().openRawResource(R.raw.yelpkey);
 
         category = getResources().getStringArray(R.array.restaurant_type);
         category[0] = "newamerican";
@@ -107,19 +115,22 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         searchNearbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String searchKeyword = searchView.getText().toString();
+                if(searchKeyword!=null)
+                    new APIFetch(searchMenu,searchKeyword,getResources().openRawResource(R.raw.yelpkey));
                 //put async task to query yelp api here.
                 //that async task will call startSearchResultsActivity onCallback
                 //manually creating searchResults list to send to listView Activity
-                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
-                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
-                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
-                searchResutls.add(new Restaurant("Taco's and Tequila"));
-                searchResutls.add(new Restaurant("Taco Bell"));
-                searchResutls.add(new Restaurant("Del Taco"));
-                searchResutls.add(new Restaurant("Taco Shack"));
-                searchResutls.add(new Restaurant("Taco Deli"));
-
-                startSearchResultsActivity(searchResutls);
+//                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
+//                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
+//                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
+//                searchResutls.add(new Restaurant("Taco's and Tequila"));
+//                searchResutls.add(new Restaurant("Taco Bell"));
+//                searchResutls.add(new Restaurant("Del Taco"));
+//                searchResutls.add(new Restaurant("Taco Shack"));
+//                searchResutls.add(new Restaurant("Taco Deli"));
+//
+//                startSearchResultsActivity(searchResutls);
             }
         });
 
@@ -130,15 +141,6 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         intent.putExtra("searchResults", searchResults);
         startActivity(intent);
     }
-
-    public void setupSpinner(Spinner s,int id ){
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,id,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
-        s.setOnItemSelectedListener(this);
-
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -151,30 +153,6 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
     }
 
 
-    private class MyTask extends AsyncTask<Void, Void, Void> {
-
-        String Result = "error";
-        protected Void doInBackground(Void... params){
-            try{
-                Result = apiResource.search();
-
-            }catch(MalformedURLException e){
-                e.printStackTrace();
-                Result = e.toString();
-
-            }catch(IOException e) {
-                e.printStackTrace();
-                Result = "IO error";
-            }
-            return null;
-        }
-
-        protected void onPostExecute(Void result){
-            tv.setText(Result);
-            super.onPostExecute(result);
-        }
-
-    }
 
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
@@ -193,4 +171,29 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
     }
 
 
+    @Override
+    public void fetchStart() {
+
+    }
+
+    @Override
+    public void fetchComplete(ArrayList<Business> result) {
+        displayList(result);
+    }
+
+    @Override
+    public void fetchCancel(String url) {
+
+    }
+
+    public void displayList(ArrayList<Business> result){
+        ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
+
+        for(Business bs:result){
+                Restaurant restaurant= new Restaurant(bs.name());
+//                Restaurant rs = new Restaurant(bs.name(),bs.location().toString(),bs.url().toString(),bs.phone().toString(),bs.rating().intValue(),bs.)
+                searchResutls.add(restaurant);
+            }
+        startSearchResultsActivity(searchResutls);
+    }
 }

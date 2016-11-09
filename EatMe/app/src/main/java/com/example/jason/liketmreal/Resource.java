@@ -2,6 +2,7 @@ package com.example.jason.liketmreal;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
@@ -72,26 +73,16 @@ public class Resource {
         return this.yelpAPI;
     }
 
-    public String search() throws IOException {
-
+    public ArrayList<Business> search(String keyWord) throws IOException {
+        ArrayList<Business> businesses;
         Map<String, String> params = new HashMap<>();
+        params.put("term", keyWord);
+        params.put("limit","20");
 
-// general params
-        params.put("term", "food");
-        params.put("limit", "3");
-
-// locale params
-        params.put("lang", "fr");
-
-
-        Call<SearchResponse> call = yelpAPI.search("San Francisco", params);
+        Call<SearchResponse> call = yelpAPI.search("Austin", params);
         SearchResponse searchResponse = call.execute().body();
-        ArrayList<Business> businesses = searchResponse.businesses();
-        String businessName = businesses.get(0).name();  // "JapaCurry Truck"
-        Double rating = businesses.get(0).rating();  // 4.0
-        System.out.println(businessName+rating);
-
-        return businessName+rating;
+        businesses = searchResponse.businesses();
+        return businesses;
     }
 
 }
