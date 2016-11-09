@@ -69,6 +69,9 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), restaurant.getName(), Toast.LENGTH_SHORT).show();//for testing purposes
                 //add intenet to run Restaurant homepage view activity
+                Intent intent = new Intent(view.getContext(), RestaurantViewActivity.class);
+                intent.putExtra("selectedRestaurant", restaurant);
+                //view.getContext().startActivity(intent);
             }
         });
     }

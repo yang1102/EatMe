@@ -29,7 +29,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".SearchResultsActivity"></activity>
+        <activity android:name=".SearchResultsActivity" />
+        <activity android:name=".RestaurantViewActivity"></activity>
     </application>
 
 </manifest>

@@ -162,15 +162,6 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         startActivity(intent);
     }
 
-    public void setupSpinner(Spinner s,int id ){
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,id,android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        s.setAdapter(adapter);
-        s.setOnItemSelectedListener(this);
-
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
