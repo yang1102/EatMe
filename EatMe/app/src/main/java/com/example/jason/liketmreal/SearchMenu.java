@@ -29,6 +29,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -40,6 +42,8 @@ import javax.xml.parsers.SAXParserFactory;
 public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemSelectedListener, APIFetch.Callback {
 
     private Button searchNearbyButton;
+    private Button suggestionButton;
+
     private String[]  category;
     private NumberPicker typePicker;
     private NumberPicker costPicker;
@@ -56,14 +60,10 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        Spinner priceSpinner = (Spinner) findViewById(R.id.priceSpinner);
-        setupSpinner(priceSpinner,R.array.price_type);
-
-        Spinner foodSpinner = (Spinner) findViewById(R.id.foodSpinner);
-        setupSpinner(foodSpinner,R.array.restaurant_type);
-
         searchNearbyButton = (Button) findViewById(R.id.nearbyButton);
+
         searchView = (EditText) findViewById(R.id.searchText);;
+        suggestionButton = (Button) findViewById(R.id.suggestButton);
 
         //setup pickers
         typePicker = (NumberPicker) findViewById(R.id.typePicker);
@@ -121,6 +121,7 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
                 //put async task to query yelp api here.
                 //that async task will call startSearchResultsActivity onCallback
                 //manually creating searchResults list to send to listView Activity
+<<<<<<< HEAD
 //                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
 //                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
 //                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
@@ -131,9 +132,54 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
 //                searchResutls.add(new Restaurant("Taco Deli"));
 //
 //                startSearchResultsActivity(searchResutls);
+=======
+                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
+                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
+                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
+                searchResutls.add(new Restaurant("Taco's and Tequila"));
+                searchResutls.add(new Restaurant("Taco Bell"));
+                searchResutls.add(new Restaurant("Del Taco"));
+                searchResutls.add(new Restaurant("Taco Shack"));
+                searchResutls.add(new Restaurant("Taco Deli"));
+                searchResutls.add(new Restaurant("Gloria's"));
+
+
+                startSearchResultsActivity(searchResutls);
+>>>>>>> master
             }
         });
 
+        //setup onclick listener for suggestButton
+        suggestionButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //animate number picker change
+                changeValueByOne(costPicker, true);
+            }
+        });
+
+    }
+
+    //animate number picker
+    private void changeValueByOne(final NumberPicker higherPicker, final boolean increment) {
+
+        Method method;
+        try {
+            // refelction call for
+            // higherPicker.changeValueByOne(true);
+            method = higherPicker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
+            method.setAccessible(true);
+            method.invoke(higherPicker, increment);
+
+        } catch (final NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (final IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (final IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (final InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startSearchResultsActivity(ArrayList<Restaurant> searchResults){
