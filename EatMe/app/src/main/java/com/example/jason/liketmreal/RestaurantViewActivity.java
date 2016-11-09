@@ -6,15 +6,14 @@ import android.widget.TextView;
 
 public class RestaurantViewActivity extends AppCompatActivity {
     Restaurant selectedRestaurant;
-    TextView restaurantNameView = (TextView) findViewById(R.id.selectedRestaurantName);
+    TextView restaurantNameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_view);
-
-
         selectedRestaurant = (Restaurant) getIntent().getSerializableExtra("selectedRestaurant");
+        restaurantNameView = (TextView) findViewById(R.id.selectedRestaurantName);
         restaurantNameView.setText(selectedRestaurant.getName());
     }
 }
