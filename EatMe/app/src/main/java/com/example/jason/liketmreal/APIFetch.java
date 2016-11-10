@@ -31,13 +31,14 @@ public class APIFetch  {
     }
 
     protected Callback callback = null;
-    protected String searchKey;
+    protected String searchParam;
     protected Resource apiResource;
 
-    public APIFetch(Callback callback, String searchKey,InputStream apiKey) {
+    public APIFetch(Callback callback, ArrayList<String> searchParam,InputStream apiKey) {
         this.callback = callback;
-        this.searchKey = searchKey;
+        this.searchParam = searchParam.toString().replace("[","").replace("]","").replace("\\s+","");
         this.apiResource = Resource.getInstance(apiKey);
+        System.out.println(this.searchParam);
         startDownload();
     }
 
@@ -49,11 +50,11 @@ public class APIFetch  {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        return searchKey.equals(((APIFetch)obj).searchKey);
+        return searchParam.equals(((APIFetch)obj).searchParam);
     }
 
     public void startDownload() {
-        new AsyncDownloader().execute(searchKey);
+        new AsyncDownloader().execute(searchParam);
     }
 
 
@@ -63,16 +64,34 @@ public class APIFetch  {
         @Override
         protected ArrayList<Business> doInBackground(String... strings) {
             ArrayList<Business> result =null;
-            String keyword= strings[0];
+            String[] keyParam = strings[0].split(",");
+            String keyword = keyParam[0];
+            String foodType = keyParam[1];
+            String foodCost = keyParam[2];
 
             try{
-                result = apiResource.search(keyword);
+                result = apiResource.search(keyword,foodType,foodCost);
 
             }catch(MalformedURLException e){
                 e.printStackTrace();
             }catch(IOException e) {
                 e.printStackTrace();
             }
+
+            for(Business bs:result){
+                Bitmap bitmap = null;
+                try{
+                    try {
+                        bitmap = BitmapFactory.decodeStream(new URL(bs.imageUrl()).openConnection().getInputStream());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (OutOfMemoryError e) {
+                    bitmap = BitmapCache.errorImageBitmap;
+                }
+
+                BitmapCache.getInstance().setBitmap(bs.imageUrl(), bitmap);
+                }
 
             return result;
         }

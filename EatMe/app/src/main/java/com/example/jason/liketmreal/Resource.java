@@ -73,11 +73,20 @@ public class Resource {
         return this.yelpAPI;
     }
 
-    public ArrayList<Business> search(String keyWord) throws IOException {
+    public ArrayList<Business> search(String keyWord,String foodType, String foodPrice) throws IOException {
         ArrayList<Business> businesses;
         Map<String, String> params = new HashMap<>();
-        params.put("term", keyWord);
+        if(keyWord!="")
+            params.put("term", keyWord);
+        else
+            params.put("term", "food");
+
+        System.out.println(keyWord);
         params.put("limit","20");
+
+        if(foodType!=null) {
+            params.put("category_filter", foodType.trim());
+        }
 
         Call<SearchResponse> call = yelpAPI.search("Austin", params);
         SearchResponse searchResponse = call.execute().body();

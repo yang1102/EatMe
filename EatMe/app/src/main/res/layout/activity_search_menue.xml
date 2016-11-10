@@ -17,7 +17,6 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:queryHint="Enter KeyWord"
         android:id="@+id/searchText"
         android:layout_height="wrap_content"
         android:layout_below="@+id/my_toolbar"
