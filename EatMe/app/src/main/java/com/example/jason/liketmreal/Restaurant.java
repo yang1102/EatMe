@@ -1,6 +1,9 @@
 package com.example.jason.liketmreal;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
+import java.net.URL;
 
 /**
  * Created by mattunion on 11/7/16.
@@ -9,18 +12,20 @@ import java.io.Serializable;
 public class Restaurant implements Serializable{
     private String name = "";
     private String address = "";
-    private String url = "";
+    private URL url = null;
     private String phoneNumber = "";
     private int rating = -1;
     private int price = -1;
 
-    public Restaurant(String name, String address, String url, String phoneNumber, int rating, int price){
+    private String pictureURL="";
+
+    public Restaurant(String name, String address, URL url, String phoneNumber, int rating, String pictureURL){
         this.name = name;
         this.address = address;
         this.url = url;
         this.phoneNumber = phoneNumber;
         this.rating = rating;
-        this.price = price;
+        this.pictureURL = pictureURL;
     }
 
     public Restaurant(String name){
@@ -43,11 +48,11 @@ public class Restaurant implements Serializable{
         this.address = address;
     }
 
-    public String getUrl() {
+    public URL getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(URL url) {
         this.url = url;
     }
 
@@ -74,5 +79,10 @@ public class Restaurant implements Serializable{
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getPicture(){return pictureURL; }
+
+    public void setPicture(String picture) {this.pictureURL = picture; }
+
 }
 

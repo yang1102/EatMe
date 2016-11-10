@@ -28,12 +28,16 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
 
     public class DynamicViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
+        public TextView address;
+        public ImageView pic;
         //public TextView hiddenText;
         public View v;
 
         public DynamicViewHolder(View view) {
             super(view);
-            name = (TextView) view.findViewById(R.id.restaurantName);
+            name = (TextView) view.findViewById(R.id.restaurant_name);
+            address = (TextView) view.findViewById(R.id.restaurant_address);
+            pic = (ImageView) view.findViewById(R.id.restaurant_pic);
             v = view;
         }
     }
@@ -61,7 +65,10 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
 
         // Set item views based on your views and data model
         TextView nameView = viewHolder.name;
+
         nameView.setText(restaurant.getName());
+        viewHolder.address.setText(restaurant.getAddress());
+        viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.getPicture()));
 
         viewHolder.v.setOnClickListener(new View.OnClickListener() {
             //how to add url to bundle

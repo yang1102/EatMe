@@ -3,12 +3,16 @@ package com.example.jason.liketmreal;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -22,6 +26,7 @@ import android.widget.Spinner;
 
 import android.app.SearchManager;
 import android.widget.SearchView.OnQueryTextListener;
+import android.widget.Toast;
 
 import com.yelp.clientlib.entities.Business;
 
@@ -39,12 +44,11 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemSelectedListener, APIFetch.Callback {
+public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     private Button searchNearbyButton;
     private Button suggestionButton;
 
-    private String[]  category;
     private NumberPicker typePicker;
     private NumberPicker costPicker;
     private NumberPicker distancePicker;
@@ -56,6 +60,19 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        // Use 1/4th of the available memory for this memory cache.
+        BitmapCache.cacheSize = maxMemory / 4;
+        // Get the size of the display so we properly size bitmaps
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        BitmapCache.maxW = size.x;
+        BitmapCache.maxH = size.y;
+
+
         setContentView(R.layout.activity_search_menue);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
@@ -107,32 +124,25 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
 
         getResources().openRawResource(R.raw.yelpkey);
 
-        category = getResources().getStringArray(R.array.restaurant_type);
-        category[0] = "newamerican";
-        category[1] = "tradamerican";
-
         //setup onclick listener for nearbyButton
         searchNearbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchKeyword = searchView.getText().toString();
-                if(searchKeyword!=null)
-                    new APIFetch(searchMenu,searchKeyword,getResources().openRawResource(R.raw.yelpkey));
                 //put async task to query yelp api here.
                 //that async task will call startSearchResultsActivity onCallback
                 //manually creating searchResults list to send to listView Activity
-//                ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
-//                searchResutls.add(new Restaurant("Torchy's Tacos", "301 Gaudalupe St.", "www.TorchysTacos.com","5126567432", 5, 3));
-//                searchResutls.add(new Restaurant("Fuzzy's Tacos"));
-//                searchResutls.add(new Restaurant("Taco's and Tequila"));
-//                searchResutls.add(new Restaurant("Taco Bell"));
-//                searchResutls.add(new Restaurant("Del Taco"));
-//                searchResutls.add(new Restaurant("Taco Shack"));
-//                searchResutls.add(new Restaurant("Taco Deli"));
-//                searchResutls.add(new Restaurant("Gloria's"));
-//
-//
-//                startSearchResultsActivity(searchResutls);
+                String foodType = arrayString[typePicker.getValue()].toLowerCase();
+                String foodCoast= Integer.toString(typePicker.getValue());
+
+                ArrayList<String> searchParam=new ArrayList<String>();
+
+                searchParam.add(searchKeyword);
+                searchParam.add(foodType);
+                searchParam.add(foodCoast);
+
+                if(searchKeyword!=null)
+                    new APIFetch(searchMenu,searchParam,getResources().openRawResource(R.raw.yelpkey));
             }
         });
 
@@ -187,23 +197,6 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
 
 
 
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
-        if (pos != 0) {
-            String list = category[pos];
-
-            // XXX Spinner has chosen new restaurant list
-            // Inform restaurantAdapter of the change
-        }
-        // An item was selected. You can retrieve the selected item using
-        // parent.getItemAtPosition(pos)
-    }
-
-    public void onNothingSelected(AdapterView<?> parent) {
-        // Another interface callback
-    }
-
-
     @Override
     public void fetchStart() {
 
@@ -223,9 +216,16 @@ public class SearchMenu extends AppCompatActivity implements AdapterView.OnItemS
         ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
 
         for(Business bs:result){
-                Restaurant restaurant= new Restaurant(bs.name());
-//                Restaurant rs = new Restaurant(bs.name(),bs.location().toString(),bs.url().toString(),bs.phone().toString(),bs.rating().intValue(),bs.)
-                searchResutls.add(restaurant);
+//                Restaurant restaurant= new Restaurant(bs.name());
+
+            URL url = null;
+            try {
+                url  = new URL(bs.url());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            Restaurant rs = new Restaurant(bs.name(),bs.location().displayAddress().toString().replace("[","").replace("]",""),url,bs.phone(),bs.rating().intValue(),bs.imageUrl());
+                searchResutls.add(rs);
             }
         startSearchResultsActivity(searchResutls);
     }
