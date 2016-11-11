@@ -179,7 +179,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         }
     }
 
-    public void startSearchResultsActivity(ArrayList<Restaurant> searchResults){
+    public void startSearchResultsActivity(ArrayList<Business> searchResults){
         Intent intent = new Intent(this, SearchResultsActivity.class);
         intent.putExtra("searchResults", searchResults);
         startActivity(intent);
@@ -204,7 +204,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     @Override
     public void fetchComplete(ArrayList<Business> result) {
-        displayList(result);
+        //displayList(result);
+        startSearchResultsActivity(result);
     }
 
     @Override
@@ -212,21 +213,19 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     }
 
-    public void displayList(ArrayList<Business> result){
-        ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
-
-        for(Business bs:result){
-//                Restaurant restaurant= new Restaurant(bs.name());
-
-            URL url = null;
-            try {
-                url  = new URL(bs.url());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            Restaurant rs = new Restaurant(bs.name(),bs.location().displayAddress().toString().replace("[","").replace("]",""),url,bs.phone(),bs.rating().intValue(),bs.imageUrl());
-            searchResutls.add(rs);
-        }
-        startSearchResultsActivity(searchResutls);
-    }
+//    public void displayList(ArrayList<Business> result){
+//        ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
+//
+//        for(Business bs:result){
+//            URL url = null;
+//            try {
+//                url  = new URL(bs.url());
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            }
+//            Restaurant rs = new Restaurant(bs.name(),bs.location().displayAddress().toString().replace("[","").replace("]",""),url,bs.phone(),bs.rating().intValue(),bs.imageUrl());
+//            searchResutls.add(rs);
+//        }
+//        startSearchResultsActivity(searchResutls);
+//    }
 }

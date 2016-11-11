@@ -6,10 +6,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
+import com.yelp.clientlib.entities.Business;
+
 import java.util.ArrayList;
 
 public class SearchResultsActivity extends AppCompatActivity {
-    private ArrayList<Restaurant> restaurants = new ArrayList<Restaurant>();
+    private ArrayList<Business> restaurants = new ArrayList<Business>();
     protected DynamicAdapter restaurantsAdapter = null;
 
 
@@ -19,7 +21,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
 
         //get search results from intent
-        restaurants = (ArrayList<Restaurant>) getIntent().getSerializableExtra("searchResults");//check null first??
+        restaurants = (ArrayList<Business>) getIntent().getSerializableExtra("searchResults");//check null first??
 
         // Lookup the recyclerview in activity layout
         RecyclerView searchResultsRecycler = (RecyclerView) findViewById(R.id.searchResults);

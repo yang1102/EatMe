@@ -13,7 +13,9 @@ import android.widget.Toast;
 
 import com.example.jason.liketmreal.R;
 import com.example.jason.liketmreal.Restaurant;
+import com.yelp.clientlib.entities.Business;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
  */
 
 public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicViewHolder> {
-    private ArrayList<Restaurant> resturants = null;//copy constructor or reference to arraylist in main_activity?
+    private ArrayList<Business> resturants = null;//copy constructor or reference to arraylist in main_activity?
 
     public class DynamicViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
@@ -41,11 +43,11 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
             v = view;
         }
     }
-    public DynamicAdapter(ArrayList<Restaurant> restaurants) {
+    public DynamicAdapter(ArrayList<Business> restaurants) {
         this.resturants = restaurants;
     }
 
-    public Restaurant getItem(int position) {
+    public Business getItem(int position) {
         return resturants.get(position);
     }
 
@@ -61,14 +63,14 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
     @Override
     public void onBindViewHolder(DynamicAdapter.DynamicViewHolder viewHolder, int position) {
         // Get the data model based on position
-        final Restaurant restaurant = resturants.get(position);
+        final Business restaurant = resturants.get(position);
 
         // Set item views based on your views and data model
         TextView nameView = viewHolder.name;
 
-        nameView.setText(restaurant.getName());
-        viewHolder.address.setText(restaurant.getAddress());
-        viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.getPicture()));
+        nameView.setText(restaurant.name());
+        viewHolder.address.setText(restaurant.location().displayAddress().toString().replace("[","").replace("]",""));
+        viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.imageUrl()));
 
         viewHolder.v.setOnClickListener(new View.OnClickListener() {
             //how to add url to bundle
