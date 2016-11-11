@@ -1,32 +1,23 @@
 package com.example.jason.liketmreal;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.jason.liketmreal.R;
-import com.example.jason.liketmreal.Restaurant;
 import com.yelp.clientlib.entities.Business;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 /**
  * Created by mattunion on 10/16/16.
  */
 
 public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicViewHolder> {
-    private ArrayList<Business> resturants = null;//copy constructor or reference to arraylist in main_activity?
+    public ArrayList<Business> restaurants = null;//copy constructor or reference to arraylist in main_activity?
 
     public class DynamicViewHolder extends RecyclerView.ViewHolder {
         public TextView name;
@@ -44,11 +35,11 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
         }
     }
     public DynamicAdapter(ArrayList<Business> restaurants) {
-        this.resturants = restaurants;
+        this.restaurants = restaurants;
     }
 
     public Business getItem(int position) {
-        return resturants.get(position);
+        return restaurants.get(position);
     }
 
     @Override
@@ -63,7 +54,7 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
     @Override
     public void onBindViewHolder(DynamicAdapter.DynamicViewHolder viewHolder, int position) {
         // Get the data model based on position
-        final Business restaurant = resturants.get(position);
+        final Business restaurant = restaurants.get(position);
 
         // Set item views based on your views and data model
         TextView nameView = viewHolder.name;
@@ -86,6 +77,6 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
 
     @Override
     public int getItemCount() {
-        return resturants.size();
+        return restaurants.size();
     }
 }

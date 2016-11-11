@@ -20,17 +20,20 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Price"/>
+            android:text="Alpha"
+            android:id="@+id/alphaOrder"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Rating"/>
+            android:text="Rating"
+            android:id="@+id/ratingOrder"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Distance"/>
+            android:text="Distance"
+            android:id="@+id/distanceOrder"/>
 
     </LinearLayout>
 
