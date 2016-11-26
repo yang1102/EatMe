@@ -33,28 +33,28 @@
         android:id="@+id/spinnerView">
 
         <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="300dp"
             android:id="@+id/ratingPicker"
             android:descendantFocusability="blocksDescendants">
         </NumberPicker>
 
         <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="300dp"
             android:id="@+id/typePicker"
             android:descendantFocusability="blocksDescendants">
         </NumberPicker>
 
         <NumberPicker
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="300dp"
             android:id="@+id/distancePicker"
             android:descendantFocusability="blocksDescendants">
         </NumberPicker>
 
     </LinearLayout>
-    
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,14 +62,15 @@
         android:id="@+id/nearbyButton"
         android:layout_below="@+id/suggestButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="53dp" />
+        android:layout_marginTop="50dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Give me a suggestion"
         android:id="@+id/suggestButton"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="150dp"
+        android:layout_below="@id/spinnerView"
         android:layout_centerHorizontal="true" />
 
 
