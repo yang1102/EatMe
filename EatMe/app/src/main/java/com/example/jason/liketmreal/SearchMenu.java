@@ -217,7 +217,10 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     @Override
     public void fetchComplete(ArrayList<Business> result) {
-        //displayList(result);
+        if(result.isEmpty()){
+            Toast.makeText(searchMenu, "No restaurants found using current filters. Try relaxing constraints.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         startSearchResultsActivity(result);
     }
 
@@ -243,20 +246,4 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
             e.printStackTrace();
         }
     }
-
-//    public void displayList(ArrayList<Business> result){
-//        ArrayList<Restaurant> searchResutls = new ArrayList<Restaurant>();
-//
-//        for(Business bs:result){
-//            URL url = null;
-//            try {
-//                url  = new URL(bs.url());
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            }
-//            Restaurant rs = new Restaurant(bs.name(),bs.location().displayAddress().toString().replace("[","").replace("]",""),url,bs.phone(),bs.rating().intValue(),bs.imageUrl());
-//            searchResutls.add(rs);
-//        }
-//        startSearchResultsActivity(searchResutls);
-//    }
 }

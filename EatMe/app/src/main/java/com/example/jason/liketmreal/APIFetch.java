@@ -3,6 +3,7 @@ package com.example.jason.liketmreal;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import com.yelp.clientlib.entities.Business;
 
@@ -63,7 +64,7 @@ public class APIFetch  {
 
         @Override
         protected ArrayList<Business> doInBackground(String... strings) {
-            ArrayList<Business> result =null;
+            ArrayList<Business> result = null;
             String[] keyParam = strings[0].split(",");
             String keyword = keyParam[0];
             String foodType = keyParam[1];
@@ -76,6 +77,11 @@ public class APIFetch  {
                 e.printStackTrace();
             }catch(IOException e) {
                 e.printStackTrace();
+            }
+
+            if(result == null){
+                result = new ArrayList<Business>();
+                return result;
             }
 
             for(Business bs:result){
