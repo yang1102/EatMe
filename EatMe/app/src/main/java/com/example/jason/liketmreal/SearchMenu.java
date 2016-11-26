@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,12 +19,11 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.yelp.clientlib.entities.Business;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -41,10 +43,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     private NumberPicker ratingPicker;
     private NumberPicker distancePicker;
     private EditText searchView;
-
     private SearchMenu searchMenu;
-
-
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,6 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         });
         changeValueByOne(ratingPicker);
 
-
         distancePicker.setMinValue(0);
         distancePicker.setMaxValue(arrayDistance.length-1);
         distancePicker.setValue(distancePicker.getMinValue());
@@ -114,7 +113,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         });
         changeValueByOne(distancePicker);
 
-
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
         getResources().openRawResource(R.raw.yelpkey);
 
@@ -148,6 +148,18 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 animateSpinner(ratingPicker, 50, 2000L, false);
                 animateSpinner(typePicker, 50, 2500L, false);
                 animateSpinner(distancePicker, 50, 3000L, true);
+
+                //start slot machine sound effect
+                int resID = R.raw.slots_sound_effect;
+                AssetFileDescriptor afd = searchMenu.getResources().openRawResourceFd(resID);
+                try {
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
