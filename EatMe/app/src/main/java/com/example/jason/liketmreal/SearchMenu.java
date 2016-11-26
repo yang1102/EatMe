@@ -1,48 +1,25 @@
 package com.example.jason.liketmreal;
 
-import android.app.SearchManager;
-import android.content.Context;
+import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.Spinner;
-
-import android.app.SearchManager;
-import android.widget.SearchView.OnQueryTextListener;
-import android.widget.Toast;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.yelp.clientlib.entities.Business;
 
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
@@ -50,7 +27,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     private Button suggestionButton;
 
     private NumberPicker typePicker;
-    private NumberPicker costPicker;
+    private NumberPicker ratingPicker;
     private NumberPicker distancePicker;
     private EditText searchView;
 
@@ -84,7 +61,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
         //setup pickers
         typePicker = (NumberPicker) findViewById(R.id.typePicker);
-        costPicker = (NumberPicker) findViewById(R.id.costPicker);
+        ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
         distancePicker = (NumberPicker) findViewById(R.id.distancePicker);
         searchMenu = this;
 
@@ -99,14 +76,14 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
             }
         });
 
-        final String[] arrayCost= new String[]{"$","$$","$$$","$$$$","$$$$$"};//for testing purposes
-        costPicker.setMinValue(0);
-        costPicker.setMaxValue(arrayCost.length-1);
-        costPicker.setFormatter(new NumberPicker.Formatter() {
+        final String[] arrayRating= new String[]{"3", "3.5","4","4.5","5"};//for testing purposes
+        ratingPicker.setMinValue(0);
+        ratingPicker.setMaxValue(arrayRating.length-1);
+        ratingPicker.setFormatter(new NumberPicker.Formatter() {
 
             @Override
             public String format(int value) {
-                return arrayCost[value];
+                return arrayRating[value];
             }
         });
 
@@ -150,33 +127,22 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         suggestionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //animate number picker change
-                changeValueByOne(costPicker, true);
+                //animate number pickers
+                ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
+
+                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        int value = (int) animation.getAnimatedValue();
+                        ratingPicker.scrollBy(0, value);
+                    }
+                });
+
+                valueAnimator.setInterpolator(new LinearInterpolator());
+                valueAnimator.setDuration(2500L);
+                valueAnimator.start();
             }
         });
-
-    }
-
-    //animate number picker
-    private void changeValueByOne(final NumberPicker higherPicker, final boolean increment) {
-
-        Method method;
-        try {
-            // refelction call for
-            // higherPicker.changeValueByOne(true);
-            method = higherPicker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
-            method.setAccessible(true);
-            method.invoke(higherPicker, increment);
-
-        } catch (final NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (final IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (final IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (final InvocationTargetException e) {
-            e.printStackTrace();
-        }
     }
 
     public void startSearchResultsActivity(ArrayList<Business> searchResults){
