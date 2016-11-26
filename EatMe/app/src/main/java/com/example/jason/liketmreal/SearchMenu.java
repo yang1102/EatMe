@@ -1,5 +1,7 @@
 package com.example.jason.liketmreal;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Point;
@@ -16,15 +18,24 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.yelp.clientlib.entities.Business;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+
+import static android.R.attr.animation;
 
 public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     private Button searchNearbyButton;
     private Button suggestionButton;
+
+    final String[] arrayString= new String[]{"American","Chinese","Mexican","Italian","Indian"};
+    final String[] arrayRating= new String[]{"3", "3.5","4","4.5","5"};
+    final String[] arrayDistance= new String[]{"1 Mile","5 Miles","10 Miles","15 Miles","20 Miles"};
 
     private NumberPicker typePicker;
     private NumberPicker ratingPicker;
@@ -32,6 +43,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     private EditText searchView;
 
     private SearchMenu searchMenu;
+
 
 
     @Override
@@ -65,9 +77,9 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         distancePicker = (NumberPicker) findViewById(R.id.distancePicker);
         searchMenu = this;
 
-        final String[] arrayString= new String[]{"American","Chinese","Mexican","Italian","Indian"};//for testing purposes
         typePicker.setMinValue(0);
         typePicker.setMaxValue(arrayString.length-1);
+        typePicker.setValue(typePicker.getMinValue());
         typePicker.setFormatter(new NumberPicker.Formatter() {
 
             @Override
@@ -75,10 +87,11 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 return arrayString[value];
             }
         });
+        changeValueByOne(typePicker);
 
-        final String[] arrayRating= new String[]{"3", "3.5","4","4.5","5"};//for testing purposes
         ratingPicker.setMinValue(0);
         ratingPicker.setMaxValue(arrayRating.length-1);
+        ratingPicker.setValue(ratingPicker.getMinValue());
         ratingPicker.setFormatter(new NumberPicker.Formatter() {
 
             @Override
@@ -86,10 +99,12 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 return arrayRating[value];
             }
         });
+        changeValueByOne(ratingPicker);
 
-        final String[] arrayDistance= new String[]{"1 Mile","5 Miles","10 Miles","15 Miles","20 Miles"};//for testing purposes
+
         distancePicker.setMinValue(0);
         distancePicker.setMaxValue(arrayDistance.length-1);
+        distancePicker.setValue(distancePicker.getMinValue());
         distancePicker.setFormatter(new NumberPicker.Formatter() {
 
             @Override
@@ -97,6 +112,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 return arrayDistance[value];
             }
         });
+        changeValueByOne(distancePicker);
+
 
 
         getResources().openRawResource(R.raw.yelpkey);
@@ -128,21 +145,39 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
             @Override
             public void onClick(View v) {
                 //animate number pickers
-                ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 100);
-
-                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        int value = (int) animation.getAnimatedValue();
-                        ratingPicker.scrollBy(0, value);
-                    }
-                });
-
-                valueAnimator.setInterpolator(new LinearInterpolator());
-                valueAnimator.setDuration(2500L);
-                valueAnimator.start();
+                animateSpinner(ratingPicker, 50, 2000L, false);
+                animateSpinner(typePicker, 50, 2500L, false);
+                animateSpinner(distancePicker, 50, 3000L, true);
             }
         });
+    }
+
+    protected void animateSpinner(final NumberPicker picker, int spinDistance, Long timeDuration, boolean onEndListener){
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, spinDistance);
+
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value = (int) animation.getAnimatedValue();
+                picker.scrollBy(0, value);
+            }
+        });
+
+        //if onEndListener is true, then add onAnimationEnd listener to this animation object
+        if(onEndListener){
+            valueAnimator.addListener(new AnimatorListenerAdapter()
+            {
+                @Override
+                public void onAnimationEnd(Animator animation)
+                {
+                    Toast.makeText(searchMenu, arrayString[typePicker.getValue()], Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        valueAnimator.setInterpolator(new LinearInterpolator());
+        valueAnimator.setDuration(timeDuration);
+        valueAnimator.start();
     }
 
     public void startSearchResultsActivity(ArrayList<Business> searchResults){
@@ -177,6 +212,24 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     @Override
     public void fetchCancel(String url) {
 
+    }
+
+    //fix to number picker being blank on initialization bug
+    //incrementing the picker by one forces the formatter to work
+    private void changeValueByOne(NumberPicker picker){
+        try {
+            Method method = picker.getClass().getDeclaredMethod("changeValueByOne", boolean.class);
+            method.setAccessible(true);
+            method.invoke(picker, true);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
 //    public void displayList(ArrayList<Business> result){
