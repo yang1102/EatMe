@@ -182,7 +182,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 @Override
                 public void onAnimationEnd(Animator animation)
                 {
-                    Toast.makeText(searchMenu, arrayString[typePicker.getValue()], Toast.LENGTH_SHORT).show();
+                    //start the restaurant home page activity
                 }
             });
         }

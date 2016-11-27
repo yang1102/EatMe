@@ -17,6 +17,8 @@ public class SearchResultsActivity extends AppCompatActivity {
     private ArrayList<Business> restaurants = new ArrayList<Business>();
     protected DynamicAdapter restaurantsAdapter = null;
     Boolean aToz = true;
+    Boolean highToLow = true;
+    Boolean nearToFar = true;
 
 
     @Override
@@ -62,6 +64,64 @@ public class SearchResultsActivity extends AppCompatActivity {
                         }
                     });
                     aToz = true;
+                }
+                restaurantsAdapter.notifyDataSetChanged();
+            }
+        });
+
+        Button ratingOrder = (Button) findViewById(R.id.ratingOrder);
+        ratingOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //order list by alphabetical order
+                if(highToLow){
+                    //order from low ratings to high ratings
+                    Collections.sort(restaurantsAdapter.restaurants, new Comparator<Business>() {
+                        @Override
+                        public int compare(Business lhs, Business rhs) {
+                            return rhs.rating().compareTo(lhs.rating());
+                        }
+                    });
+                    highToLow = false;
+                }
+                else{
+                    //order from high ratings to low ratings
+                    Collections.sort(restaurantsAdapter.restaurants, new Comparator<Business>() {
+                        @Override
+                        public int compare(Business lhs, Business rhs) {
+                            return lhs.rating().compareTo(rhs.rating());
+                        }
+                    });
+                    highToLow = true;
+                }
+                restaurantsAdapter.notifyDataSetChanged();
+            }
+        });
+
+        Button distanceOrder = (Button) findViewById(R.id.distanceOrder);
+        distanceOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //order list by alphabetical order
+                if(nearToFar){
+                    //order from furthest restaurant to nearest
+                    Collections.sort(restaurantsAdapter.restaurants, new Comparator<Business>() {
+                        @Override
+                        public int compare(Business lhs, Business rhs) {
+                            return rhs.distance().compareTo(lhs.distance());
+                        }
+                    });
+                    nearToFar = false;
+                }
+                else{
+                    //order from nearest restaurant to furthest
+                    Collections.sort(restaurantsAdapter.restaurants, new Comparator<Business>() {
+                        @Override
+                        public int compare(Business lhs, Business rhs) {
+                            return lhs.distance().compareTo(rhs.distance());
+                        }
+                    });
+                    nearToFar = true;
                 }
                 restaurantsAdapter.notifyDataSetChanged();
             }

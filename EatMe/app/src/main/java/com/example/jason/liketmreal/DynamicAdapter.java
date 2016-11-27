@@ -23,7 +23,8 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
         public TextView name;
         public TextView address;
         public ImageView pic;
-        //public TextView hiddenText;
+        public TextView rating;
+        public TextView distance;
         public View v;
 
         public DynamicViewHolder(View view) {
@@ -31,6 +32,8 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
             name = (TextView) view.findViewById(R.id.restaurant_name);
             address = (TextView) view.findViewById(R.id.restaurant_address);
             pic = (ImageView) view.findViewById(R.id.restaurant_pic);
+            rating = (TextView) view.findViewById(R.id.rating);
+            distance = (TextView) view.findViewById(R.id.distance);
             v = view;
         }
     }
@@ -57,10 +60,15 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
         final Business restaurant = restaurants.get(position);
 
         // Set item views based on your views and data model
-        TextView nameView = viewHolder.name;
-
-        nameView.setText(restaurant.name());
+        viewHolder.name.setText(restaurant.name());
         viewHolder.address.setText(restaurant.location().displayAddress().toString().replace("[","").replace("]",""));
+        viewHolder.rating.setText(String.valueOf(restaurant.rating() + "/5 stars"));
+        if(restaurant.distance() == null){
+            viewHolder.distance.setText(String.valueOf("distance unknown"));
+        }
+        else{
+            viewHolder.distance.setText(String.valueOf(restaurant.distance()));
+        }
         viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.imageUrl()));
 
         viewHolder.v.setOnClickListener(new View.OnClickListener() {
