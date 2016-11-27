@@ -135,8 +135,11 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 searchParam.add(foodType);
                 searchParam.add(foodCoast);
 
-                if(searchKeyword!=null)
-                    new APIFetch(searchMenu,searchParam,getResources().openRawResource(R.raw.yelpkey));
+                if(searchKeyword!=null){
+                    APIFetch apiAccess = new APIFetch(searchMenu,searchParam,getResources().openRawResource(R.raw.yelpkey));
+                    apiAccess.startDownload();
+                }
+
             }
         });
 
@@ -208,13 +211,6 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     }
 
-
-
-    @Override
-    public void fetchStart() {
-
-    }
-
     @Override
     public void fetchComplete(ArrayList<Business> result) {
         if(result.isEmpty()){
@@ -222,11 +218,6 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
             return;
         }
         startSearchResultsActivity(result);
-    }
-
-    @Override
-    public void fetchCancel(String url) {
-
     }
 
     //fix to number picker being blank on initialization bug

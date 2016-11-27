@@ -35,11 +35,10 @@
                 android:layout_toRightOf="@+id/restaurant_pic"
                 android:layout_below="@+id/restaurant_name" />
 
-            <TextView
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rating"
-                android:textSize="15sp"
+                android:id="@+id/ratingImage"
                 android:layout_toRightOf="@+id/restaurant_pic"
                 android:layout_below="@+id/restaurant_address"/>
 
@@ -49,7 +48,7 @@
                 android:id="@+id/distance"
                 android:textSize="15sp"
                 android:layout_below="@+id/restaurant_address"
-                android:layout_toRightOf="@+id/rating"
+                android:layout_toRightOf="@+id/ratingImage"
                 android:layout_marginLeft="50dp"/>
             <!--<TextView-->
                 <!--android:layout_width="wrap_content"-->

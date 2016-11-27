@@ -10,26 +10,36 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jason.liketmreal.RestaurantViewActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/RestaurantImage"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="50sp"
+        android:text="Restaurant Name"
         android:textStyle="bold"
-        android:id="@+id/selectedRestaurantName"/>
+        android:id="@+id/selectedRestaurantName"
+        android:layout_below="@+id/RestaurantImage"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/selectedPhone"
-        android:textSize="10sp"
+        android:text="(512) 122-8888"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
         android:layout_below="@id/selectedRestaurantName"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textSize="10sp"
+        android:textSize="20sp"
+        android:text="www.placeholder.com"
         android:id="@+id/selectedWebsite"
         android:layout_below="@id/selectedPhone"/>
 

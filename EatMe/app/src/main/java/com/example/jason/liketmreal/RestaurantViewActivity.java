@@ -2,11 +2,13 @@ package com.example.jason.liketmreal;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yelp.clientlib.entities.Business;
@@ -17,12 +19,16 @@ import java.net.URL;
 public class RestaurantViewActivity extends AppCompatActivity {
     Business selectedRestaurant;
     TextView restaurantNameView;
+    ImageView restaurantImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_view);
         selectedRestaurant = (Business) getIntent().getSerializableExtra("selectedRestaurant");
+
+        restaurantImageView = (ImageView) findViewById(R.id.RestaurantImage);
+        restaurantImageView.setImageBitmap(BitmapCache.getInstance().getBitmap(selectedRestaurant.imageUrl()));
 
         restaurantNameView = (TextView) findViewById(R.id.selectedRestaurantName);
         restaurantNameView.setText(selectedRestaurant.name());

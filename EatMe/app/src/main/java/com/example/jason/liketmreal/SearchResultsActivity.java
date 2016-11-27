@@ -47,7 +47,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //make sure all restaurants have distance info
                 for(Business business : restaurantsAdapter.restaurants){
-                    if(business.distance() == null){
+                    if(business.name() == null){
                         Toast.makeText(getApplicationContext(), "One or more cells missing name info, can't sort.", Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -83,7 +83,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //make sure all restaurants have distance info
                 for(Business business : restaurantsAdapter.restaurants){
-                    if(business.distance() == null){
+                    if(business.rating() == null){
                         Toast.makeText(getApplicationContext(), "One or more cells missing rating info, can't sort.", Toast.LENGTH_LONG).show();
                         return;
                     }

@@ -3,20 +3,13 @@ package com.example.jason.liketmreal;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.yelp.clientlib.entities.Business;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 /**
@@ -26,9 +19,7 @@ import java.util.ArrayList;
 public class APIFetch  {
 
     public interface Callback {
-        void fetchStart();
         void fetchComplete(ArrayList<Business> result);
-        void fetchCancel(String keyward);
     }
 
     protected Callback callback = null;
@@ -39,8 +30,6 @@ public class APIFetch  {
         this.callback = callback;
         this.searchParam = searchParam.toString().replace("[","").replace("]","").replace("\\s+","");
         this.apiResource = Resource.getInstance(apiKey);
-        System.out.println(this.searchParam);
-        startDownload();
     }
 
     @Override
@@ -55,12 +44,12 @@ public class APIFetch  {
     }
 
     public void startDownload() {
-        new AsyncDownloader().execute(searchParam);
+        new AsyncSearch().execute(searchParam);
     }
 
 
 
-    public class AsyncDownloader extends AsyncTask<String, Integer, ArrayList<Business>> {
+    public class AsyncSearch extends AsyncTask<String, Integer, ArrayList<Business>> {
 
         @Override
         protected ArrayList<Business> doInBackground(String... strings) {
@@ -86,19 +75,25 @@ public class APIFetch  {
 
             for(Business bs:result){
                 Bitmap bitmap = null;
-                try{
-                    try {
-                        bitmap = BitmapFactory.decodeStream(new URL(bs.imageUrl()).openConnection().getInputStream());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } catch (OutOfMemoryError e) {
+                //get restaurant image
+                try {
+                    bitmap = BitmapFactory.decodeStream(new URL(bs.imageUrl()).openConnection().getInputStream());
+                }
+                catch (IOException e) {
                     bitmap = BitmapCache.errorImageBitmap;
+                    e.printStackTrace();
                 }
-
                 BitmapCache.getInstance().setBitmap(bs.imageUrl(), bitmap);
+                //get rating image
+                try {
+                    bitmap = BitmapFactory.decodeStream(new URL(bs.ratingImgUrlLarge()).openConnection().getInputStream());
                 }
-
+                catch (IOException e) {
+                    bitmap = BitmapCache.errorImageBitmap;
+                    e.printStackTrace();
+                }
+                BitmapCache.getInstance().setBitmap(bs.ratingImgUrlLarge(), bitmap);
+            }
             return result;
         }
 
