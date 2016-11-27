@@ -53,8 +53,25 @@ public class APIFetch  {
 
         @Override
         protected ArrayList<Business> doInBackground(String... strings) {
-            ArrayList<Business> result = null;
+            ArrayList<Business> result = new ArrayList<Business>();
             String[] keyParam = strings[0].split(",");
+
+            //hacky way to reuse AsyncTask code to search for specific business
+            if(keyParam.length == 1){
+                try{
+                    Business businessResult = apiResource.findBusiness(keyParam[0]);
+                    if(businessResult != null){
+                        result.add(businessResult);
+                    }
+                    return result;
+
+                }catch(MalformedURLException e){
+                    e.printStackTrace();
+                }catch(IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             String keyword = keyParam[0];
             String foodType = keyParam[1];
             String foodCost = keyParam[2];

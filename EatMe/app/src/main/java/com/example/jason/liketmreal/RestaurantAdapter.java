@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by mattunion on 10/16/16.
  */
 
-public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicViewHolder> {
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.DynamicViewHolder> {
     public ArrayList<Business> restaurants = null;//copy constructor or reference to arraylist in main_activity?
 
     public class DynamicViewHolder extends RecyclerView.ViewHolder {
@@ -37,7 +37,7 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
             v = view;
         }
     }
-    public DynamicAdapter(ArrayList<Business> restaurants) {
+    public RestaurantAdapter(ArrayList<Business> restaurants) {
         this.restaurants = restaurants;
     }
 
@@ -46,7 +46,7 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
     }
 
     @Override
-    public DynamicAdapter.DynamicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RestaurantAdapter.DynamicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.restaurant_list_cell, parent, false);
 
@@ -55,7 +55,7 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(DynamicAdapter.DynamicViewHolder viewHolder, int position) {
+    public void onBindViewHolder(RestaurantAdapter.DynamicViewHolder viewHolder, int position) {
         // Get the data model based on position
         final Business restaurant = restaurants.get(position);
 

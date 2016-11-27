@@ -81,7 +81,6 @@ public class Resource {
         else
             params.put("term", "food");
 
-        System.out.println(keyWord);
         params.put("limit","20");
 
         if(foodType!=null) {
@@ -94,4 +93,9 @@ public class Resource {
         return businesses;
     }
 
+    public Business findBusiness(String businessID) throws IOException {
+        Call<Business> call = yelpAPI.getBusiness(businessID);
+        Business searchResult = call.execute().body();
+        return searchResult;
+    }
 }

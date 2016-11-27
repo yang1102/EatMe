@@ -14,13 +14,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity{
     private ArrayList<Business> restaurants = new ArrayList<Business>();
-    protected DynamicAdapter restaurantsAdapter = null;
+    protected RestaurantAdapter restaurantsAdapter = null;
     Boolean aToz = true;
     Boolean highToLow = true;
     Boolean nearToFar = true;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         // Lookup the recyclerview in activity layout
         final RecyclerView searchResultsRecycler = (RecyclerView) findViewById(R.id.searchResults);
 
-        restaurantsAdapter = new DynamicAdapter(restaurants);
+        restaurantsAdapter = new RestaurantAdapter(restaurants);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         searchResultsRecycler.setLayoutManager(mLayoutManager);
