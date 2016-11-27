@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.yelp.clientlib.entities.Business;
 
@@ -44,6 +45,13 @@ public class SearchResultsActivity extends AppCompatActivity {
         alphaOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //make sure all restaurants have distance info
+                for(Business business : restaurantsAdapter.restaurants){
+                    if(business.distance() == null){
+                        Toast.makeText(getApplicationContext(), "One or more cells missing name info, can't sort.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
                 //order list by alphabetical order
                 if(aToz){
                     //order from A to Z
@@ -73,7 +81,14 @@ public class SearchResultsActivity extends AppCompatActivity {
         ratingOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //order list by alphabetical order
+                //make sure all restaurants have distance info
+                for(Business business : restaurantsAdapter.restaurants){
+                    if(business.distance() == null){
+                        Toast.makeText(getApplicationContext(), "One or more cells missing rating info, can't sort.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+                //order list by rating
                 if(highToLow){
                     //order from low ratings to high ratings
                     Collections.sort(restaurantsAdapter.restaurants, new Comparator<Business>() {
@@ -102,7 +117,14 @@ public class SearchResultsActivity extends AppCompatActivity {
         distanceOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //order list by alphabetical order
+                //make sure all restaurants have distance info
+                for(Business business : restaurantsAdapter.restaurants){
+                    if(business.distance() == null){
+                        Toast.makeText(getApplicationContext(), "One or more cells missing distance info, can't sort.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+                //order list by distance
                 if(nearToFar){
                     //order from furthest restaurant to nearest
                     Collections.sort(restaurantsAdapter.restaurants, new Comparator<Business>() {

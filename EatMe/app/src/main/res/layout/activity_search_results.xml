@@ -14,25 +14,32 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Sort By:"
+            android:textSize="25sp"
             android:textStyle="bold"
             android:gravity="center"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
-            android:text="Alpha"
+            android:text="Alphabetical"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:id="@+id/alphaOrder"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:text="Rating"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:id="@+id/ratingOrder"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="match_parent"
             android:text="Distance"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:id="@+id/distanceOrder"/>
 
     </LinearLayout>

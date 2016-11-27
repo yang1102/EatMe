@@ -67,7 +67,7 @@ public class DynamicAdapter extends RecyclerView.Adapter<DynamicAdapter.DynamicV
             viewHolder.distance.setText(String.valueOf("distance unknown"));
         }
         else{
-            viewHolder.distance.setText(String.valueOf(restaurant.distance()));
+            viewHolder.distance.setText(String.valueOf(restaurant.distance()) + " meters away");
         }
         viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.imageUrl()));
 
