@@ -68,7 +68,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
         searchNearbyButton = (Button) findViewById(R.id.nearbyButton);
 
-        searchView = (EditText) findViewById(R.id.searchText);;
+        //searchView = (EditText) findViewById(R.id.searchText);;
         suggestionButton = (Button) findViewById(R.id.suggestButton);
 
         //setup pickers
@@ -122,7 +122,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         searchNearbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchKeyword = searchView.getText().toString();
+                //String searchKeyword = searchView.getText().toString();
+                String searchKeyword = "";
                 //put async task to query yelp api here.
                 //that async task will call startSearchResultsActivity onCallback
                 //manually creating searchResults list to send to listView Activity

@@ -13,11 +13,11 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:id="@+id/restaurant_pic"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
                 android:layout_marginRight="16dp" />
 
             <TextView
@@ -39,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ratingImage"
+                android:layout_marginTop="10dp"
                 android:layout_toRightOf="@+id/restaurant_pic"
                 android:layout_below="@+id/restaurant_address"/>
 
@@ -48,6 +49,7 @@
                 android:id="@+id/distance"
                 android:textSize="15sp"
                 android:layout_below="@+id/restaurant_address"
+                android:layout_marginTop="6dp"
                 android:layout_toRightOf="@+id/ratingImage"
                 android:layout_marginLeft="50dp"/>
             <!--<TextView-->

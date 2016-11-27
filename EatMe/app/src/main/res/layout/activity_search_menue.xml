@@ -15,19 +15,22 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <EditText
+    <TextView
         android:layout_width="match_parent"
-        android:id="@+id/searchText"
         android:layout_height="wrap_content"
+        android:id="@+id/IntroText"
         android:layout_below="@+id/my_toolbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_margin="20dp"/>
+        android:layout_margin="20dp"
+        android:text="Magical Restaurant Suggestion Machine"
+        android:textSize="30sp"
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/searchText"
+        android:layout_below="@+id/IntroText"
         android:gravity="center"
         android:orientation="horizontal"
         android:id="@+id/spinnerView">
@@ -58,20 +61,31 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Browse Nearby Restaurants"
-        android:id="@+id/nearbyButton"
-        android:layout_below="@+id/suggestButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Give me a suggestion"
+        android:text="Give It A Spin!"
         android:id="@+id/suggestButton"
         android:layout_marginTop="150dp"
         android:layout_below="@id/spinnerView"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/suggestButton"
+        android:id="@+id/OrText"
+        android:layout_margin="10dp"
+        android:text="OR"
+        android:textSize="30sp"
+        android:gravity="center"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Browse Nearby Restaurants With Current Filters"
+        android:id="@+id/nearbyButton"
+        android:layout_below="@+id/suggestButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
 
 
 </RelativeLayout>
