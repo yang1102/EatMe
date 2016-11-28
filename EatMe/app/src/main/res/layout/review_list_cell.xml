@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/authorImage"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/authorImage"
+        android:text="Author Name"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/authorName"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/authorImage"
+        android:layout_below="@id/authorName"
+        android:id="@+id/reviewRatingImage"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Review Body"
+        android:textSize="15sp"
+        android:id="@+id/reviewBody"
+        android:layout_below="@id/authorImage"/>
+
+</RelativeLayout>

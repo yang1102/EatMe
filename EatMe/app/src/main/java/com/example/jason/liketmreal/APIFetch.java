@@ -62,6 +62,21 @@ public class APIFetch  {
                     Business businessResult = apiResource.findBusiness(keyParam[0]);
                     if(businessResult != null){
                         result.add(businessResult);
+                        //add reviewer picture and star picture to bitmap
+                        Bitmap userBitmap = null;
+                        Bitmap ratingBitmap = null;
+                        //get restaurant image
+                        try {
+                            userBitmap = BitmapFactory.decodeStream(new URL(businessResult.reviews().get(0).user().imageUrl()).openConnection().getInputStream());
+                            ratingBitmap = BitmapFactory.decodeStream(new URL(businessResult.reviews().get(0).ratingImageLargeUrl()).openConnection().getInputStream());
+                        }
+                        catch (IOException e) {
+                            userBitmap = BitmapCache.errorImageBitmap;
+                            ratingBitmap = BitmapCache.errorImageBitmap;
+                            e.printStackTrace();
+                        }
+                        BitmapCache.getInstance().setBitmap(businessResult.reviews().get(0).user().imageUrl(), userBitmap);
+                        BitmapCache.getInstance().setBitmap(businessResult.reviews().get(0).ratingImageLargeUrl(), ratingBitmap);
                     }
                     return result;
 

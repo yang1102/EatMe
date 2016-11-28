@@ -215,7 +215,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     @Override
     public void fetchComplete(ArrayList<Business> result) {
         if(result.isEmpty()){
-            Toast.makeText(searchMenu, "No restaurants found using current filters. Try relaxing constraints.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(searchMenu, "No reviews found using current filters. Try relaxing constraints.", Toast.LENGTH_SHORT).show();
             return;
         }
         startSearchResultsActivity(result);

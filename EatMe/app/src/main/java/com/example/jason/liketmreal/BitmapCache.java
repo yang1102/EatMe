@@ -5,6 +5,7 @@ package com.example.jason.liketmreal;
  */
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -42,6 +43,8 @@ public class BitmapCache {
         };
         this.defaultThumbnailBitmap = makeDefaultThumbnail();
         this.errorImageBitmap = makeErrorImage();
+        //add default images to bitmap cache
+        this.setBitmap("defaultUserImage", this.defaultThumbnailBitmap);
     }
 
     private static class BitmapCacheHolder {
