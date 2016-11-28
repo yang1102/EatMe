@@ -87,9 +87,15 @@ public class Resource {
         SearchResponse searchResponse = call.execute().body();
         businesses = searchResponse.businesses();
 
-        //go through businesses and filter those who don't meet ratingParam requirment
+        ArrayList<Business> filteredBusinesses = new ArrayList<Business>();
+        //go through businesses and filter those who don't meet ratingParam requirement
+        for(Business business: businesses){
+            if(business.rating() >= Double.parseDouble(ratingParam)){
+                filteredBusinesses.add(business);
+            }
+        }
 
-        return businesses;
+        return filteredBusinesses;
     }
 
     public Business findBusiness(String businessID) throws IOException {
