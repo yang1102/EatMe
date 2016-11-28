@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
 import android.media.AudioManager;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,8 +29,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import static android.R.attr.animation;
-
 public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     private Button searchNearbyButton;
@@ -44,9 +41,14 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     private Boolean typeLocked = false;
     private Boolean distanceLocked = false;
 
-    final String[] arrayString= new String[]{"American","Chinese","Mexican","Italian","Indian"};
-    final String[] arrayRating= new String[]{"3", "3.5","4","4.5","5"};
-    final String[] arrayDistance= new String[]{"1 Mile","5 Miles","10 Miles","15 Miles","20 Miles"};
+    final String[] arrayString= new String[]{"American", "Barbeque", "Brazilian", "Cafes", "Chinese", "French", "Greek", "Indian","Italian", "Japanese", "Mexican", "Middle Eastern", "Thai"};
+    final String[] arrayRating= new String[]{"3 stars", "3.5 stars","4 stars","4.5 stars","5 stars"};
+    final String[] arrayDistance= new String[]{"1 Mile","5 Miles","10 Miles","15 Miles","20 Miles", "25 Miles"};
+
+    final String[] typeCodes = new String[]{"newamerican", "bbq", "brazilian", "cafes", "chinese", "french", "greek", "indpak", "italian", "japanese", "mexican", "mideastern", "thai",};
+    final String[] milesToMeters = new String[]{"1609", "8046", "16093", "24140", "32186", "40000"};//approximate miles to meters conversion
+    final String[] stringToDouble = new String[]{"3.0", "3.5", "4.0", "4.5", "5.0"};
+
 
     private NumberPicker typePicker;
     private NumberPicker ratingPicker;
@@ -137,25 +139,14 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         searchNearbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String searchKeyword = searchView.getText().toString();
-                String searchKeyword = "";
                 //put async task to query yelp api here.
                 //that async task will call startSearchResultsActivity onCallback
                 //manually creating searchResults list to send to listView Activity
-                String foodType = arrayString[typePicker.getValue()].toLowerCase();
-                String foodCoast= Integer.toString(typePicker.getValue());
-
-                ArrayList<String> searchParam=new ArrayList<String>();
-
-                searchParam.add(searchKeyword);
-                searchParam.add(foodType);
-                searchParam.add(foodCoast);
-
-                if(searchKeyword!=null){
-                    APIFetch apiAccess = new APIFetch(searchMenu,searchParam,getResources().openRawResource(R.raw.yelpkey));
-                    apiAccess.startDownload();
-                }
-
+                String foodType = typeCodes[typePicker.getValue()];
+                String distance = milesToMeters[distancePicker.getValue()];
+                String rating = stringToDouble[ratingPicker.getValue()];
+                APIFetch apiAccess = new APIFetch(searchMenu, getResources().openRawResource(R.raw.yelpkey));
+                apiAccess.searchRestaurants(rating, foodType, distance);
             }
         });
 

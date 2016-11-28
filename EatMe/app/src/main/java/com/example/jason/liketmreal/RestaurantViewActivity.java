@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,9 +19,6 @@ import com.yelp.clientlib.entities.Business;
 import com.yelp.clientlib.entities.Review;
 import com.yelp.clientlib.entities.User;
 
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class RestaurantViewActivity extends AppCompatActivity implements APIFetch.Callback{
@@ -56,10 +52,8 @@ public class RestaurantViewActivity extends AppCompatActivity implements APIFetc
         selectedRestaurant = (Business) getIntent().getSerializableExtra("selectedRestaurant");
 
         //first thing, async download the reivew list
-        ArrayList<String> searchParams = new ArrayList<String>();
-        searchParams.add(selectedRestaurant.id());
-        APIFetch apiAccess = new APIFetch(this,searchParams,getResources().openRawResource(R.raw.yelpkey));
-        apiAccess.startDownload();
+        APIFetch apiAccess = new APIFetch(this, getResources().openRawResource(R.raw.yelpkey));
+        apiAccess.findRestaurantByID(selectedRestaurant.id());
 
         restaurantImageView = (ImageView) findViewById(R.id.RestaurantImage);
         restaurantImageView.setImageBitmap(BitmapCache.getInstance().getBitmap(selectedRestaurant.imageUrl()));

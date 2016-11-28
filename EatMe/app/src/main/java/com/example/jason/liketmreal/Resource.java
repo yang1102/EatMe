@@ -73,23 +73,22 @@ public class Resource {
         return this.yelpAPI;
     }
 
-    public ArrayList<Business> search(String keyWord,String foodType, String foodPrice) throws IOException {
+    public ArrayList<Business> search(String ratingParam,String foodParam, String distanceParam) throws IOException {
         ArrayList<Business> businesses;
         Map<String, String> params = new HashMap<>();
-        if(keyWord!="")
-            params.put("term", keyWord);
-        else
-            params.put("term", "food");
-
+        //term param should always be "food"
+        params.put("term", "food");
+        //this param limits number of results returned, may make this editable by user if we have time
         params.put("limit","20");
+        params.put("category_filter", foodParam);
+        params.put("radius_filter", distanceParam);
 
-        if(foodType!=null) {
-            params.put("category_filter", foodType.trim());
-        }
-
-        Call<SearchResponse> call = yelpAPI.search("Austin", params);
+        Call<SearchResponse> call = yelpAPI.search("Austin", params);//eventually need to make "Austin" change dynamically depending on user location as reported by google maps api
         SearchResponse searchResponse = call.execute().body();
         businesses = searchResponse.businesses();
+
+        //go through businesses and filter those who don't meet ratingParam requirment
+
         return businesses;
     }
 
