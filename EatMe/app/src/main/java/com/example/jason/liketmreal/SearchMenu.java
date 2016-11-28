@@ -40,6 +40,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     private Boolean ratingLocked = false;
     private Boolean typeLocked = false;
     private Boolean distanceLocked = false;
+    private Boolean suggestionPressed;
 
     final String[] arrayString= new String[]{"American", "Barbeque", "Brazilian", "Cafes", "Chinese", "French", "Greek", "Indian","Italian", "Japanese", "Mexican", "Middle Eastern", "Thai"};
     final String[] arrayRating= new String[]{"3 stars", "3.5 stars","4 stars","4.5 stars","5 stars"};
@@ -139,6 +140,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         searchNearbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //tell class to start SearchResultsActivity on async return
+                suggestionPressed = false;
                 //put async task to query yelp api here.
                 //that async task will call startSearchResultsActivity onCallback
                 //manually creating searchResults list to send to listView Activity
@@ -157,6 +160,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 if(!ratingPicker.isEnabled() && !typePicker.isEnabled() && !distancePicker.isEnabled()){
                     return;
                 }
+                //tell class to start restaurantViewIntent on async return
+                suggestionPressed = true;
 
                 //animate number pickers
                 animateSpinner(ratingPicker, 50, 2000L, false);
@@ -165,15 +170,7 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
                 //start slot machine sound effect
                 int resID = R.raw.slots_sound_effect;
-                AssetFileDescriptor afd = searchMenu.getResources().openRawResourceFd(resID);
-                try {
-                    mediaPlayer.reset();
-                    mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                playSoundEffect(resID);
             }
         });
 
@@ -249,7 +246,12 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 @Override
                 public void onAnimationEnd(Animator animation)
                 {
-                    //start the restaurant home page activity
+                    //start search with current filters
+                    String foodType = typeCodes[typePicker.getValue()];
+                    String distance = milesToMeters[distancePicker.getValue()];
+                    String rating = stringToDouble[ratingPicker.getValue()];
+                    APIFetch apiAccess = new APIFetch(searchMenu, getResources().openRawResource(R.raw.yelpkey));
+                    apiAccess.searchRestaurants(rating, foodType, distance);
                 }
             });
         }
@@ -262,6 +264,14 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     public void startSearchResultsActivity(ArrayList<Business> searchResults){
         Intent intent = new Intent(this, SearchResultsActivity.class);
         intent.putExtra("searchResults", searchResults);
+        startActivity(intent);
+    }
+
+    public void startRestaurantViewActivity(ArrayList<Business> searchResults){
+        //pick one resturant at random
+        Business searchResult = searchResults.get(0);
+        Intent intent = new Intent(this, RestaurantViewActivity.class);
+        intent.putExtra("selectedRestaurant", searchResult);
         startActivity(intent);
     }
 
@@ -278,10 +288,18 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     @Override
     public void fetchComplete(ArrayList<Business> result) {
         if(result.isEmpty()){
-            Toast.makeText(searchMenu, "No reviews found using current filters. Try relaxing constraints.", Toast.LENGTH_SHORT).show();
+            playSoundEffect(R.raw.sad_trombone);
+            Toast.makeText(searchMenu, "No restaurants found using current filters. Try relaxing constraints.", Toast.LENGTH_SHORT).show();
             return;
         }
-        startSearchResultsActivity(result);
+        //hacky way to start single restaurant view or list view depending on what button was pressed. Probably should've just made two separate async downloader classes.
+        if(suggestionPressed){
+            playSoundEffect(R.raw.ta_da);
+            startRestaurantViewActivity(result);
+        }
+        else{
+            startSearchResultsActivity(result);
+        }
     }
 
     //fix to number picker being blank on initialization bug
@@ -298,6 +316,18 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void playSoundEffect(int resID){
+        AssetFileDescriptor afd = searchMenu.getResources().openRawResourceFd(resID);
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
