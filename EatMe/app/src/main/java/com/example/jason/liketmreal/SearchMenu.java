@@ -227,17 +227,15 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
     protected void animateSpinner(final NumberPicker picker, int spinDistance, Long timeDuration, boolean onEndListener){
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, spinDistance);
 
-        if(!picker.isEnabled()){
-            return;
+        if(picker.isEnabled()){
+            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    int value = (int) animation.getAnimatedValue();
+                    picker.scrollBy(0, value);
+                }
+            });
         }
-
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int value = (int) animation.getAnimatedValue();
-                picker.scrollBy(0, value);
-            }
-        });
 
         //if onEndListener is true, then add onAnimationEnd listener to this animation object
         if(onEndListener){
