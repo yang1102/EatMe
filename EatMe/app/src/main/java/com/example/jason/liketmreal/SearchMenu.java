@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
@@ -267,7 +268,9 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     public void startRestaurantViewActivity(ArrayList<Business> searchResults){
         //pick one resturant at random
-        Business searchResult = searchResults.get(0);
+        Random randomizer = new Random();
+        Business searchResult = searchResults.get(randomizer.nextInt(searchResults.size()));
+        //start restaurant view activity
         Intent intent = new Intent(this, RestaurantViewActivity.class);
         intent.putExtra("selectedRestaurant", searchResult);
         startActivity(intent);
