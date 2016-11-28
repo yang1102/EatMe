@@ -33,28 +33,74 @@
         android:layout_below="@+id/IntroText"
         android:gravity="center"
         android:orientation="horizontal"
+        android:layout_marginTop="20dp"
         android:id="@+id/spinnerView">
 
-        <NumberPicker
-            android:layout_width="150dp"
-            android:layout_height="300dp"
-            android:id="@+id/ratingPicker"
-            android:descendantFocusability="blocksDescendants">
-        </NumberPicker>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <NumberPicker
-            android:layout_width="150dp"
-            android:layout_height="300dp"
-            android:id="@+id/typePicker"
-            android:descendantFocusability="blocksDescendants">
-        </NumberPicker>
+            <NumberPicker
+                android:layout_width="150dp"
+                android:layout_height="300dp"
+                android:id="@+id/ratingPicker"
+                android:descendantFocusability="blocksDescendants">
+            </NumberPicker>
 
-        <NumberPicker
-            android:layout_width="150dp"
-            android:layout_height="300dp"
-            android:id="@+id/distancePicker"
-            android:descendantFocusability="blocksDescendants">
-        </NumberPicker>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/unlocked"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:id="@+id/ratingLock"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <NumberPicker
+                android:layout_width="150dp"
+                android:layout_height="300dp"
+                android:id="@+id/typePicker"
+                android:descendantFocusability="blocksDescendants">
+            </NumberPicker>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/unlocked"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:id="@+id/typeLock"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <NumberPicker
+                android:layout_width="150dp"
+                android:layout_height="300dp"
+                android:id="@+id/distancePicker"
+                android:descendantFocusability="blocksDescendants">
+            </NumberPicker>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/unlocked"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:id="@+id/distanceLock"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

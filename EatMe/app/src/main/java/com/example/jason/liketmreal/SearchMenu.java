@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Point;
 import android.media.AudioManager;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
@@ -34,6 +36,13 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
 
     private Button searchNearbyButton;
     private Button suggestionButton;
+    private ImageButton ratingLock ;
+    private ImageButton typeLock;
+    private ImageButton distanceLock;
+
+    private Boolean ratingLocked = false;
+    private Boolean typeLocked = false;
+    private Boolean distanceLocked = false;
 
     final String[] arrayString= new String[]{"American","Chinese","Mexican","Italian","Indian"};
     final String[] arrayRating= new String[]{"3", "3.5","4","4.5","5"};
@@ -75,6 +84,12 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         typePicker = (NumberPicker) findViewById(R.id.typePicker);
         ratingPicker = (NumberPicker) findViewById(R.id.ratingPicker);
         distancePicker = (NumberPicker) findViewById(R.id.distancePicker);
+
+        //setup picker locks
+        typeLock = (ImageButton) findViewById(R.id.typeLock);
+        ratingLock = (ImageButton) findViewById(R.id.ratingLock);
+        distanceLock = (ImageButton) findViewById(R.id.distanceLock);
+
         searchMenu = this;
 
         typePicker.setMinValue(0);
@@ -148,6 +163,10 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
         suggestionButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                if(!ratingPicker.isEnabled() && !typePicker.isEnabled() && !distancePicker.isEnabled()){
+                    return;
+                }
+
                 //animate number pickers
                 animateSpinner(ratingPicker, 50, 2000L, false);
                 animateSpinner(typePicker, 50, 2500L, false);
@@ -166,10 +185,63 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback {
                 }
             }
         });
+
+        //setup onclick listeners for lock buttons
+        ratingLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ratingLocked){
+                    ratingLocked = false;
+                    ratingLock.setImageResource(R.drawable.unlocked);
+                    ratingPicker.setEnabled(true);
+                }
+                else{
+                    ratingLocked = true;
+                    ratingLock.setImageResource(R.drawable.locked);
+                    ratingPicker.setEnabled(false);
+                }
+            }
+        });
+
+        typeLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(typeLocked){
+                    typeLocked = false;
+                    typeLock.setImageResource(R.drawable.unlocked);
+                    typePicker.setEnabled(true);
+                }
+                else{
+                    typeLocked = true;
+                    typeLock.setImageResource(R.drawable.locked);
+                    typePicker.setEnabled(false);
+                }
+            }
+        });
+
+        distanceLock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(distanceLocked){
+                    distanceLocked = false;
+                    distanceLock.setImageResource(R.drawable.unlocked);
+                    distancePicker.setEnabled(true);
+                }
+                else{
+                    distanceLocked = true;
+                    distanceLock.setImageResource(R.drawable.locked);
+                    distancePicker.setEnabled(false);
+                }
+            }
+        });
     }
 
     protected void animateSpinner(final NumberPicker picker, int spinDistance, Long timeDuration, boolean onEndListener){
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, spinDistance);
+
+        if(!picker.isEnabled()){
+            return;
+        }
 
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
