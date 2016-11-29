@@ -7,7 +7,9 @@ import android.widget.ArrayAdapter;
 import com.yelp.clientlib.connection.YelpAPI;
 import com.yelp.clientlib.connection.YelpAPIFactory;
 import com.yelp.clientlib.entities.Business;
+import com.yelp.clientlib.entities.Location;
 import com.yelp.clientlib.entities.SearchResponse;
+import com.yelp.clientlib.entities.options.CoordinateOptions;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -73,7 +75,7 @@ public class Resource {
         return this.yelpAPI;
     }
 
-    public ArrayList<Business> search(String ratingParam,String foodParam, String distanceParam) throws IOException {
+    public ArrayList<Business> search(String ratingParam,String foodParam, String distanceParam,String currentLocation) throws IOException {
         ArrayList<Business> businesses;
         Map<String, String> params = new HashMap<>();
         //term param should always be "food"
@@ -83,7 +85,13 @@ public class Resource {
         params.put("category_filter", foodParam);
         params.put("radius_filter", distanceParam);
 
-        Call<SearchResponse> call = yelpAPI.search("Austin", params);//eventually need to make "Austin" change dynamically depending on user location as reported by google maps api
+        double latitude = Double.parseDouble(currentLocation.split(",")[0]);
+        double longitude =  Double.parseDouble(currentLocation.split(",")[1]);
+
+        CoordinateOptions cord = CoordinateOptions.builder()
+                                .latitude(latitude)
+                                .longitude(longitude).build();
+        Call<SearchResponse> call = yelpAPI.search(cord, params);//eventually need to make "Austin" change dynamically depending on user location as reported by google maps api
         SearchResponse searchResponse = call.execute().body();
         businesses = searchResponse.businesses();
 

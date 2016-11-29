@@ -2,6 +2,7 @@ package com.example.jason.liketmreal;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.os.AsyncTask;
 
 import com.yelp.clientlib.entities.Business;
@@ -30,8 +31,8 @@ public class APIFetch  {
         this.apiResource = Resource.getInstance(apiKey);
     }
 
-    public void searchRestaurants(String rating, String type, String distance) {
-        new AsyncSearch().execute(rating, type, distance);
+    public void searchRestaurants(String rating, String type, String distance,String currentLocation) {
+        new AsyncSearch().execute(rating, type, distance, currentLocation);
     }
 
     public void findRestaurantByID(String restaurantID) {
@@ -72,10 +73,10 @@ public class APIFetch  {
             return result;
         }
 
-        private ArrayList<Business> searchForRestaurantsByFilter(String ratingParam, String typeParam, String distanceParam){
+        private ArrayList<Business> searchForRestaurantsByFilter(String ratingParam, String typeParam, String distanceParam, String currentLocation){
             ArrayList<Business> result = new ArrayList<Business>();
             try{
-                result = apiResource.search(ratingParam,typeParam,distanceParam);
+                result = apiResource.search(ratingParam,typeParam,distanceParam, currentLocation);
 
             }catch(MalformedURLException e){
                 e.printStackTrace();
@@ -119,7 +120,7 @@ public class APIFetch  {
                 return searchForRestaurantByID(strings[0]);
             }
             else{
-                return searchForRestaurantsByFilter(strings[0], strings[1], strings[2]);
+                return searchForRestaurantsByFilter(strings[0], strings[1], strings[2], strings[3]);
             }
         }
 
