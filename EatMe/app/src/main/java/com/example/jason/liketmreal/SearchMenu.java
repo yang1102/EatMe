@@ -3,11 +3,14 @@ package com.example.jason.liketmreal;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -34,7 +37,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -62,13 +64,13 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
     private Boolean distanceLocked = false;
     private Boolean suggestionPressed;
 
-    final String[] arrayString = new String[]{"American", "Barbeque", "Brazilian", "Cafes", "Chinese", "French", "Greek", "Indian", "Italian", "Japanese", "Mexican", "Middle Eastern", "Thai"};
-    final String[] arrayRating = new String[]{"3 stars", "3.5 stars", "4 stars", "4.5 stars", "5 stars"};
-    final String[] arrayDistance = new String[]{"1 Mile", "5 Miles", "10 Miles", "15 Miles", "20 Miles", "25 Miles"};
+    final String[] arrayString = new String[]{"","American", "Barbeque", "Brazilian", "Cafes", "Chinese", "French", "Greek", "Indian", "Italian", "Japanese", "Mexican", "Middle Eastern", "Thai"};
+    final String[] arrayRating = new String[]{"","3 stars", "3.5 stars", "4 stars", "4.5 stars", "5 stars"};
+    final String[] arrayDistance = new String[]{"","1 Mile", "5 Miles", "10 Miles", "15 Miles", "20 Miles", "25 Miles"};
 
-    final String[] typeCodes = new String[]{"newamerican", "bbq", "brazilian", "cafes", "chinese", "french", "greek", "indpak", "italian", "japanese", "mexican", "mideastern", "thai",};
-    final String[] milesToMeters = new String[]{"1609", "8046", "16093", "24140", "32186", "40000"};//approximate miles to meters conversion
-    final String[] stringToDouble = new String[]{"3.0", "3.5", "4.0", "4.5", "5.0"};
+    final String[] typeCodes = new String[]{"","newamerican", "bbq", "brazilian", "cafes", "chinese", "french", "greek", "indpak", "italian", "japanese", "mexican", "mideastern", "thai",};
+    final String[] milesToMeters = new String[]{"","1609", "8046", "16093", "24140", "32186", "40000"};//approximate miles to meters conversion
+    final String[] stringToDouble = new String[]{"","3.0", "3.5", "4.0", "4.5", "5.0"};
 
 
     private NumberPicker typePicker;
@@ -78,18 +80,19 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
     private MediaPlayer mediaPlayer;
 
     //map
-    private SupportMapFragment mapFragment;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
     private LocationRequest mLocationRequest;
-    private MapHolder mapHolder;
-    private boolean mRequestingLocationUpdates = false;
 
+    //log
     public static final String TAG = SearchMenu.class.getSimpleName();
+
+    //loading
+    private ProgressDialog progress;
+
 
     /*
      * Define a request code to send to Google Play services
-     * This code is returned in Activity.onActivityResult
      */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private final static int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 8000;
@@ -190,15 +193,6 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
                     .setFastestInterval(1 * 1000); // 1 second, in milliseconds
         }
 
-//        mapHolder = new MapHolder(this);
-//        mapFragment = new SupportMapFragment();
-//        mapFragment.getMapAsync(mapHolder);
-
-        /* Notice the handy method chaining idiom for fragment transactions */
-//        getSupportFragmentManager().beginTransaction()
-//                .add(R.id.main_fragment, mapFragment)
-//                .hide(mapFragment)
-//                .commit();
 
 
         //setup onclick listener for nearbyButton
@@ -350,8 +344,23 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
 
     }
 
+
+    @Override
+    public void fetchStart() {
+        progress=new ProgressDialog(this);
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // Set the progress dialog title and message
+        progress.setTitle("Preparing the list");
+        progress.setMessage("Loading.........");
+        // Set the progress dialog background color
+        progress.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD4D9D0")));
+        progress.setIndeterminate(false);
+        progress.show();
+    }
+
     @Override
     public void fetchComplete(ArrayList<Business> result) {
+        progress.dismiss();
         if (result.isEmpty()) {
             playSoundEffect(R.raw.sad_trombone);
             Toast.makeText(searchMenu, "No restaurants found using current filters. Try relaxing constraints.", Toast.LENGTH_SHORT).show();
@@ -401,10 +410,11 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
     protected void onResume() {
         super.onResume();
         mGoogleApiClient.connect();
-        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
+        if (mGoogleApiClient.isConnected()) {
             startLocationUpdates();
         }
     }
+
 
     @Override
     protected void onPause() {
@@ -425,7 +435,6 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
 
     @Override
     public void onConnectionSuspended(int i) {
-
     }
 
     @Override
@@ -542,13 +551,10 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
         }
         mLastLocation = LocationServices.FusedLocationApi
                 .getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLongitude();
-            LatLng latLng = new LatLng(latitude, longitude);
-        } else {
-            Toast.makeText(getApplicationContext(), "service not ready !",
+        if(mLastLocation == null){
+            Toast.makeText(getApplicationContext(), "cant access previous location!",
                     Toast.LENGTH_SHORT).show();
+            startLocationUpdates();
         }
     }
 

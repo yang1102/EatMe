@@ -82,8 +82,10 @@ public class Resource {
         params.put("term", "food");
         //this param limits number of results returned, may make this editable by user if we have time
         params.put("limit","20");
-        params.put("category_filter", foodParam);
-        params.put("radius_filter", distanceParam);
+        if(foodParam!="")
+            params.put("category_filter", foodParam);
+        if(distanceParam!="")
+            params.put("radius_filter", distanceParam);
 
         double latitude = Double.parseDouble(currentLocation.split(",")[0]);
         double longitude =  Double.parseDouble(currentLocation.split(",")[1]);
@@ -98,7 +100,7 @@ public class Resource {
         ArrayList<Business> filteredBusinesses = new ArrayList<Business>();
         //go through businesses and filter those who don't meet ratingParam requirement
         for(Business business: businesses){
-            if(business.rating() >= Double.parseDouble(ratingParam)){
+            if(ratingParam==""||business.rating() >= Double.parseDouble(ratingParam)){
                 filteredBusinesses.add(business);
             }
         }

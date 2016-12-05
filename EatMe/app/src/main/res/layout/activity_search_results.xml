@@ -20,7 +20,7 @@
             android:gravity="center"/>
 
         <Button
-            android:layout_width="150dp"
+            android:layout_width="125dp"
             android:layout_height="match_parent"
             android:text="Alphabetical"
             android:layout_marginRight="5dp"
@@ -28,7 +28,7 @@
             android:id="@+id/alphaOrder"/>
 
         <Button
-            android:layout_width="150dp"
+            android:layout_width="125dp"
             android:layout_height="match_parent"
             android:text="Rating"
             android:layout_marginRight="5dp"
@@ -36,12 +36,21 @@
             android:id="@+id/ratingOrder"/>
 
         <Button
-            android:layout_width="150dp"
+            android:layout_width="125dp"
             android:layout_height="match_parent"
             android:text="Distance"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:id="@+id/distanceOrder"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/wallet_holo_blue_light"
+            android:text="Map"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:id="@+id/showOnMap"/>
 
     </LinearLayout>
 

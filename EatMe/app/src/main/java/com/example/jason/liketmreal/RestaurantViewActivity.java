@@ -3,6 +3,7 @@ package com.example.jason.liketmreal;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +12,14 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.yelp.clientlib.entities.Business;
+import com.yelp.clientlib.entities.Coordinate;
 import com.yelp.clientlib.entities.Review;
 import com.yelp.clientlib.entities.User;
 
@@ -30,6 +34,12 @@ public class RestaurantViewActivity extends AppCompatActivity implements APIFetc
     protected ReviewAdapter reviewAdapter = null;
     protected ArrayList<Review> reviews = new ArrayList<Review>();
 
+    Button direction;
+    RestaurantViewActivity activity = this;
+
+    @Override
+    public void fetchStart() {
+    }
 
     //reviews download finished
     @Override
@@ -49,14 +59,36 @@ public class RestaurantViewActivity extends AppCompatActivity implements APIFetc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_view);
+
         selectedRestaurant = (Business) getIntent().getSerializableExtra("selectedRestaurant");
+
+
+        //Open map route
+        direction = (Button) findViewById(R.id.direction);
+        direction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Coordinate loc = selectedRestaurant.location().coordinate();
+                String address = selectedRestaurant.name()+"+";
+                for(String str :selectedRestaurant.location().displayAddress())
+                    address+=str+" ";
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
 
         //first thing, async download the reivew list
         APIFetch apiAccess = new APIFetch(this, getResources().openRawResource(R.raw.yelpkey));
         apiAccess.findRestaurantByID(selectedRestaurant.id());
 
         restaurantImageView = (ImageView) findViewById(R.id.RestaurantImage);
-        restaurantImageView.setImageBitmap(BitmapCache.getInstance().getBitmap(selectedRestaurant.imageUrl()));
+
+        if(selectedRestaurant.imageUrl()!=null)
+            restaurantImageView.setImageBitmap(BitmapCache.getInstance().getBitmap(selectedRestaurant.imageUrl()));
+        else
+            restaurantImageView.setImageBitmap(BitmapCache.errorImageBitmap);
 
         ratingImageView = (ImageView) findViewById(R.id.selectedRating);
         ratingImageView.setImageBitmap(BitmapCache.getInstance().getBitmap(selectedRestaurant.ratingImgUrlLarge()));
@@ -160,6 +192,5 @@ public class RestaurantViewActivity extends AppCompatActivity implements APIFetc
         searchResultsRecycler.setLayoutManager(mLayoutManager);
         //searchResultsRecycler.setItemAnimator(new DefaultItemAnimator());
         searchResultsRecycler.setAdapter(reviewAdapter);
-
     }
 }

@@ -1,5 +1,7 @@
 package com.example.jason.liketmreal;
 
+import android.content.Intent;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +22,7 @@ public class SearchResultsActivity extends AppCompatActivity{
     Boolean aToz = true;
     Boolean highToLow = true;
     Boolean nearToFar = true;
+    SearchResultsActivity activity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,5 +150,17 @@ public class SearchResultsActivity extends AppCompatActivity{
                 restaurantsAdapter.notifyDataSetChanged();
             }
         });
+
+        Button openMap = (Button) findViewById(R.id.showOnMap);
+        openMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent getMapScreen = new Intent(activity,MapsActivity.class);
+                getMapScreen.putExtra("restaurants", restaurants);
+                startActivity(getMapScreen);
+            }
+        });
+
+
     }
 }

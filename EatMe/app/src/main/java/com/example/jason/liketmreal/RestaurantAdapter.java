@@ -68,7 +68,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Dy
         else{
             viewHolder.distance.setText(String.valueOf(restaurant.distance()) + " meters away");
         }
-        viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.imageUrl()));
+        if(restaurant.imageUrl()!=null)
+            viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.imageUrl()));
+        else
+            viewHolder.pic.setImageBitmap(BitmapCache.errorImageBitmap);
         viewHolder.ratingImage.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.ratingImgUrlLarge()));
 
 

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class APIFetch  {
 
     public interface Callback {
+        void fetchStart();
         void fetchComplete(ArrayList<Business> result);
     }
 
@@ -93,13 +94,16 @@ public class APIFetch  {
                 Bitmap bitmap = null;
                 //get restaurant image
                 try {
-                    bitmap = BitmapFactory.decodeStream(new URL(bs.imageUrl()).openConnection().getInputStream());
+                    if(bs.imageUrl()!=null)
+                        bitmap = BitmapFactory.decodeStream(new URL(bs.imageUrl()).openConnection().getInputStream());
                 }
                 catch (IOException e) {
                     bitmap = BitmapCache.errorImageBitmap;
                     e.printStackTrace();
                 }
-                BitmapCache.getInstance().setBitmap(bs.imageUrl(), bitmap);
+
+                if(bs.imageUrl()!=null)
+                    BitmapCache.getInstance().setBitmap(bs.imageUrl(), bitmap);
                 //get rating image
                 try {
                     bitmap = BitmapFactory.decodeStream(new URL(bs.ratingImgUrlLarge()).openConnection().getInputStream());
@@ -122,6 +126,12 @@ public class APIFetch  {
             else{
                 return searchForRestaurantsByFilter(strings[0], strings[1], strings[2], strings[3]);
             }
+        }
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            callback.fetchStart();
         }
 
         @Override
