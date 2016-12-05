@@ -10,16 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.jason.liketmreal.RestaurantViewActivity">
 
-    <Button
-        android:text="Get Me There"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/direction"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/wallet_holo_blue_light"
-        android:layout_marginTop="70dp"
-        android:layout_marginRight="20dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

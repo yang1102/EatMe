@@ -64,9 +64,9 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
     private Boolean distanceLocked = false;
     private Boolean suggestionPressed;
 
-    final String[] arrayString = new String[]{"","American", "Barbeque", "Brazilian", "Cafes", "Chinese", "French", "Greek", "Indian", "Italian", "Japanese", "Mexican", "Middle Eastern", "Thai"};
-    final String[] arrayRating = new String[]{"","3 stars", "3.5 stars", "4 stars", "4.5 stars", "5 stars"};
-    final String[] arrayDistance = new String[]{"","1 Mile", "5 Miles", "10 Miles", "15 Miles", "20 Miles", "25 Miles"};
+    final String[] arrayString = new String[]{"Any","American", "Barbeque", "Brazilian", "Cafes", "Chinese", "French", "Greek", "Indian", "Italian", "Japanese", "Mexican", "Middle Eastern", "Thai"};
+    final String[] arrayRating = new String[]{"Any","3 stars", "3.5 stars", "4 stars", "4.5 stars", "5 stars"};
+    final String[] arrayDistance = new String[]{"Any","1 Mile", "5 Miles", "10 Miles", "15 Miles", "20 Miles", "25 Miles"};
 
     final String[] typeCodes = new String[]{"","newamerican", "bbq", "brazilian", "cafes", "chinese", "french", "greek", "indpak", "italian", "japanese", "mexican", "mideastern", "thai",};
     final String[] milesToMeters = new String[]{"","1609", "8046", "16093", "24140", "32186", "40000"};//approximate miles to meters conversion
@@ -115,8 +115,8 @@ public class SearchMenu extends AppCompatActivity implements APIFetch.Callback, 
 
 
         setContentView(R.layout.activity_search_menue);
-        final Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+//        final Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+//        setSupportActionBar(myToolbar);
 
         searchNearbyButton = (Button) findViewById(R.id.nearbyButton);
 

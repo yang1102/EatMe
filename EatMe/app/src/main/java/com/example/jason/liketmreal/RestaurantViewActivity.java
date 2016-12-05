@@ -62,23 +62,6 @@ public class RestaurantViewActivity extends AppCompatActivity implements APIFetc
 
         selectedRestaurant = (Business) getIntent().getSerializableExtra("selectedRestaurant");
 
-
-        //Open map route
-        direction = (Button) findViewById(R.id.direction);
-        direction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Coordinate loc = selectedRestaurant.location().coordinate();
-                String address = selectedRestaurant.name()+"+";
-                for(String str :selectedRestaurant.location().displayAddress())
-                    address+=str+" ";
-                Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                startActivity(mapIntent);
-            }
-        });
-
         //first thing, async download the reivew list
         APIFetch apiAccess = new APIFetch(this, getResources().openRawResource(R.raw.yelpkey));
         apiAccess.findRestaurantByID(selectedRestaurant.id());
@@ -111,6 +94,21 @@ public class RestaurantViewActivity extends AppCompatActivity implements APIFetc
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phoneNumber, null));
                 v.getContext().startActivity(intent);
+            }
+        });
+
+        //Open map route
+        restaurantAddressView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Coordinate loc = selectedRestaurant.location().coordinate();
+                String address = selectedRestaurant.name()+"+";
+                for(String str :selectedRestaurant.location().displayAddress())
+                    address+=str+" ";
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 
