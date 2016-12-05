@@ -12,6 +12,8 @@ import com.yelp.clientlib.entities.Business;
 
 import java.util.ArrayList;
 
+import static java.lang.Math.round;
+
 /**
  * Created by mattunion on 10/16/16.
  */
@@ -66,7 +68,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Dy
             viewHolder.distance.setText(String.valueOf("distance unknown"));
         }
         else{
-            viewHolder.distance.setText(String.valueOf(restaurant.distance()) + " meters away");
+            viewHolder.distance.setText(String.valueOf(round(restaurant.distance())) + " meters away");
         }
         if(restaurant.imageUrl()!=null)
             viewHolder.pic.setImageBitmap(BitmapCache.getInstance().getBitmap(restaurant.imageUrl()));

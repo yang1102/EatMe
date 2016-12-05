@@ -97,7 +97,7 @@ public class MapsActivity extends FragmentActivity implements
                 mLocationRequest = LocationRequest.create()
                         .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                         .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                        .setFastestInterval(1 * 1000); // 1 second, in milliseconds
+                        .setFastestInterval(1000); // 1 second, in milliseconds
             }
         }
         mGoogleApiClient.connect();
@@ -141,9 +141,10 @@ public class MapsActivity extends FragmentActivity implements
                     Toast.LENGTH_SHORT).show();
         }
 
-
-            me = mMap.addMarker(new MarkerOptions()
+            if(me==null)
+                me = mMap.addMarker(new MarkerOptions()
                     .position(my));
+
             for (Business business : restaurants) {
                 addMarker(business);
             }
@@ -178,7 +179,7 @@ public class MapsActivity extends FragmentActivity implements
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(marker.getPosition())      // Sets the center of the map to Mountain View
                     .zoom(17)                   // Sets the zoom
-                    .bearing(180)                // Sets the orientation of the camera to east
+                    .bearing(180)                // Sets the orientation of the camera
                     .tilt(30)                   // Sets the tilt of the camera to 30 degrees
                     .build();
             mMap.animateCamera(CameraUpdateFactory
@@ -359,7 +360,7 @@ public class MapsActivity extends FragmentActivity implements
                 .target(loc)      // Sets the center of the map to Mountain View
                 .zoom(15)                   // Sets the zoom
                 .bearing(0)                // Sets the orientation of the camera to east
-                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                .tilt(0)                   // Sets the tilt of the camera to 0 degrees
                 .build();
         mMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition),2000,null);

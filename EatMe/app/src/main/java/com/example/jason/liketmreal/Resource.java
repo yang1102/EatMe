@@ -80,7 +80,6 @@ public class Resource {
         Map<String, String> params = new HashMap<>();
         //term param should always be "food"
         params.put("term", "food");
-        //this param limits number of results returned, may make this editable by user if we have time
         params.put("limit","20");
         if(foodParam!="")
             params.put("category_filter", foodParam);
@@ -93,7 +92,7 @@ public class Resource {
         CoordinateOptions cord = CoordinateOptions.builder()
                                 .latitude(latitude)
                                 .longitude(longitude).build();
-        Call<SearchResponse> call = yelpAPI.search(cord, params);//eventually need to make "Austin" change dynamically depending on user location as reported by google maps api
+        Call<SearchResponse> call = yelpAPI.search(cord, params);                       //eventually need to make "Austin" change dynamically depending on user location as reported by google maps api
         SearchResponse searchResponse = call.execute().body();
         businesses = searchResponse.businesses();
 
